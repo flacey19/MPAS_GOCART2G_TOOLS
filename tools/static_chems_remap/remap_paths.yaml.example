@@ -1,0 +1,5 @@
+path_grid_base: /glade/derecho/scratch/lacey/MPAS_DEVEL/static_dust/x1.163842.grid.nc
+path_grid_new: /glade/derecho/scratch/lacey/MPAS_DEVEL/static_dust/x6.827394.grid.nc
+path_static: /glade/derecho/scratch/lacey/MPAS_DEVEL/static_dust/x1.163842.static_chems.nc
+output_path: /glade/derecho/scratch/lacey/MPAS_DEVEL/static_dust/x6.827394.static_chems.nc
+xtime: "2019-07-15_12:00:00"
