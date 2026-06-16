@@ -64,7 +64,9 @@ xtime: "2019-07-15_12:00:00"                     # Optional: override xtime in o
 |-------|----------|-------------|
 | `path_grid_base` | No | Path to source MPAS grid file. If omitted, uses `path_static` for grid coordinates. |
 | `path_grid_new` | Yes | Path to target MPAS grid file. |
-| `path_static` | Yes | Path to source static chemistry NetCDF file. || `output_path` | Yes | Path where remapped output file will be written. || `xtime` | No | Optional timestamp to override in the output file (format: `YYYY-MM-DD_hh:mm:ss`). If omitted, preserves source xtime. |
+| `path_static` | Yes | Path to source static chemistry NetCDF file. 
+| `output_path` | Yes | Path where remapped output file will be written. 
+| `xtime` | No | Optional timestamp to override in the output file (format: `YYYY-MM-DD_hh:mm:ss`). If omitted, preserves source xtime. |
 
 ## Usage
 
