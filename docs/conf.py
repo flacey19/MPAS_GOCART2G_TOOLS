@@ -4,11 +4,15 @@ project = 'MPAS_GOCART2G_TOOLS'
 copyright = '2026, flacey19'
 author = 'flacey19'
 
-# Sphinx extensions (add theme or markdown support here if needed)
-extensions = []
+# Enable MyST-Parser extension for Markdown support
+extensions = [
+    'myst_parser',
+]
 
-templates_path = ['_templates']
-exclude_patterns = []
+# Tell Sphinx to parse both .rst and .md files
+source_suffix = {
+    '.rst': 'restructuredtext',
+    '.md': 'markdown',
+}
 
-# HTML theme configuration
 html_theme = 'sphinx_rtd_theme'
