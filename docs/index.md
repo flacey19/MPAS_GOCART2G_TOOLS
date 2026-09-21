@@ -1,10 +1,9 @@
 # MPAS_GOCART2G_TOOLS Documentation
 
-Welcome to the documentation for **MPAS_GOCART2G_TOOLS**.
+Welcome to the official documentation for MPAS_GOCART2G_TOOLS.
 
 ```{toctree}
 :maxdepth: 2
-:caption: Contents:
+:caption: User Guide & Tutorials:
 
-installation.md
-usage.md
+tutorial
