@@ -93,7 +93,7 @@ A detailed documentation of all the chemistry namelist options will be generated
 
 Figure 2 displays the workflow for preparing a MPAS-GOCART2G simulation. The lefthand column (boxes outlined in blue) are detailed in Chapter 1 and the righthand column (boxes outlined in purple) are described in Chapter 2\. 
 
-```{figure} _static/MPAS_GOCART2G_Inst_F2.png
+```{figure} static/MPAS_GOCART2G_Inst_F2.png
 :alt: MPAS-GOCART2G Workflow Diagram
 :align: center
 :width: 100%
@@ -471,7 +471,7 @@ You can then run the python script using:
 
 To output and display the following graphic. 
 
-```{figure} _static/MPAS_GOCART2G_Inst_F3.png
+```{figure} static/MPAS_GOCART2G_Inst_F3.png
 :alt: Sample Global Emissions Plot
 :align: center
 :width: 100%
@@ -545,7 +545,7 @@ uxds\["bc\_anth\_sum"\].isel(Time=0).plot(
 
 This code will ensure the appropriate packages are available and plot one of the MPAS-GOCART2G input emission files, resulting in the following figure in a Holoview frame: 
 
-```{figure} _static/MPAS_GOCART2G_Inst_F4.png
+```{figure} static/MPAS_GOCART2G_Inst_F4.png
 :alt: Global CAMS BC Emissions
 :align: center
 :width: 100%
@@ -571,7 +571,7 @@ uxds\["bc\_anth\_sum"\].isel(Time=0).plot(
 )
 
 Resulting in the following plot:   
-```{figure} _static/MPAS_GOCART2G_Inst_F5.png
+```{figure} static/MPAS_GOCART2G_Inst_F5.png
 :alt: CAMS BC Emissions over India
 :align: center
 :width: 100%
