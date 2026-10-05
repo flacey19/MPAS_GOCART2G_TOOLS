@@ -15,4 +15,6 @@ source_suffix = {
     '.md': 'markdown',
 }
 
+html_static_path = ['static']
+
 html_theme = 'sphinx_rtd_theme'
