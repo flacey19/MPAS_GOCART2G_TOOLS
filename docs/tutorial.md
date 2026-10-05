@@ -24,7 +24,7 @@ The MPAS-GOCART2G model has been developed as part of the NSF NCAR’s vision to
 
 The implementation of GOCART-2G is illustrated in Figure 1 and can be categorized into four layers as the Input Layer, the Model Initialization and Temporal Update Layer, The Physics and Dynamics Layer, and the Chemistry and Diagnostics layer:
 
-```{figure} _docs/static/MPAS_GOCART2G_Inst_F1.png
+```{figure} static/MPAS_GOCART2G_Inst_F1.png
 :alt: The MPAS-A, chemistry, and external tools system flowchart
 :align: center
 :width: 100%
