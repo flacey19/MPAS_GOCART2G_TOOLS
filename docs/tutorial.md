@@ -18,6 +18,8 @@ These instructions combine information from both the [MPAS Tutorial \- Practice 
 
 **Appendix A** explains how to download MERRA2 files.
 
+**Appendix B** describes ways to visualize MPAS-GOCART2G output.
+
 ## **Background chapter Familiarizing yourself with the physics suite to run a MPAS-GOCART2G simulation**
 
 The MPAS-GOCART2G model has been developed as part of the NSF NCAR’s vision to move towards a unified modeling framework and links the MPAS-A dynamical core (Skamarock et al., 2012) to the GOCART2G chemical mechanism (Collow et al., 2024). The GOCART2G module adds 30 new scalars to represent seven tropospheric aerosol species and their precursors. Major aerosol species represented by GOCART2G include black carbon (BC), brown carbon (BrC), organic carbon (OC), sulfate, nitrate, dust, and sea-salt. BC, BrC, and OC are assumed to be present in hydrophobic and hydrophilic modes with an e-folding lifetime of 2.5 days for conversion of hydrophobic mode to hydrophilic mode. All the aerosol species are subjected to gravitational settling, dry and wet deposition processes except that in-cloud wet deposition processes do not affect hydrophobic mode mass mixing ratios. Dry deposition velocity of aerosol and precursor species is estimated using the Wesely (1989) scheme. Resolved scale wet deposition of aerosols is calculated using aerosol-aware Thompson-Edihammer scheme. Convective transport of all chemical constituents is simulated using nTiedtke scheme.  
@@ -29,16 +31,16 @@ The implementation of GOCART-2G is illustrated in Figure 1 and can be categorize
 :align: center
 :width: 100%
 
-**Figure 1.** The MPAS-A system (blue boxes), chemistry and GOCART-2G system (green and yellow boxes), and external tools (pink boxes).
+**Figure 1.** The MPAS-A system (gray and blue boxes) and chemistry and GOCART-2G system (green and yellow boxes).
 ```
 
 Anthropogenic emissions are represented using the CAMS emissions inventory (Soulie et al., 2023). BC emissions from all sources are assumed to be 80% in hydrophobic mode while BrC and OC emissions are assumed to be 50% in hydrophobic mode at the time of emissions. The remaining fractions are considered to be hydrophilic. Anthropogenic emissions from the aviation sector (if provided as input to the model) are distributed in three layers: Landing and Take off emissions are assigned to the 100 m layer, Continuous Climb and Descent Operations (CDO) emissions are assigned to 100 m \- 9 km layer and the remaining aircraft flight operations are distributed between 9 and 10 km altitude layers. Emissions from all other anthropogenic sources are emitted within the lowest 100 m. 
 
-Biogenic emissions are read from pre-calculated emissions files available in the CAMS inventory (i.e., they are *not* computed at each emission time step with inputs from local temperature and PAR). CAMS v4 biogenic emissions include only isoprene emissions, therefore CAMS v3.1 is used and CAMS 2019 biogenic emissions are applied to MPAS-GOCART2G simulations for case studies after 2019\. Following Collow et al. (2024), isoprene, monoterpene, and other terpene emissions are assigned to the hydrophilic mode of the OC. Since their emissions occur at the tree top, they are only emitted in the lowest model layer.   
+Biogenic emissions are read from pre-calculated emissions files available in the CAMS inventory (i.e., they are *not* computed at each emission time step with inputs from local temperature and PAR). CAMS v4 biogenic emissions include only isoprene emissions, therefore CAMS v3.1 is used and CAMS 2019 biogenic emissions are applied to MPAS-GOCART2G simulations for case studies for all years\. Following Collow et al. (2024), isoprene, monoterpene, and other terpene emissions are assigned to the hydrophilic mode of the OC. Since their emissions occur at the tree top, they are only emitted in the lowest model layer.   
 
-Biomass burning emissions in MPAS-GOCART-2G are represented using FINN version 2.5.1 (Wiedinmyer et al., 2023). A climatological diurnal profile is applied to distribute the emissions to hourly values. MPAS-GOCART-2G then uniformly mixes the biomass burning emissions within the PBL. To ensure model stability and prevent unrealistically high AOD values from biomass burning, the model limits biomass burning emissions in such a way that AOD from biomass burning emissions over all time steps in a day cannot exceed 30.0.  
+Biomass burning emissions in MPAS-GOCART-2G are represented using FINN version 2.5.1 (Wiedinmyer et al., 2023). A climatological diurnal profile is applied to distribute the emissions to hourly values. MPAS-GOCART-2G then uniformly mixes the biomass burning emissions within the PBL. To ensure model stability and prevent unrealistically high Aerosol Optical Depth (AOD) values from biomass burning, the model limits biomass burning emissions in such a way that AOD from biomass burning emissions over all time steps in a day cannot exceed AOD = 30.0.  
 
-Dust Aerosols are represented using five size bins (radii of 0.73, 1.4, 2.4, 4.5, and 8.0 µm) and their emissions are calculated online within the model utilizing the Ginoux et al. (2001) parameterization. Static geographical fields such as “erod” (erodibility representing the areas from where dust aerosols can be emitted), clayfrac and sandfrac required for dust emissions are mapped to the MPAS-GOCART domain along with the processing of other static geographical fields (see Section 1.3 of [MPAS tutorial guide](https://www2.mmm.ucar.edu/projects/mpas/tutorial/Howard2024/index.html) for processing these fields). Sea-Salt Aerosols also use five size bins, specifically with radii of 0.079, 0.316, 1.119, 2.818, and 7.772 µm. Emissions for sea-salt are calculated using the Gong (2003) wind-driven parameterization, but this includes two key modifications: first, friction velocity has replaced the 10m wind speed, which is required for tuning the parameterization's constants; and second, a correction term dependent on sea surface temperature was added. This temperature-dependent modification is similar to the approach by Jaegle et al. (2011) but was specifically tuned to improve agreement between the simulated sea-salt Aerosol Optical Depth (AOD) and MODIS-retrieved AOD.
+Dust aerosols are represented using five size bins (radii of 0.73, 1.4, 2.4, 4.5, and 8.0 µm) and their emissions are calculated online within the model utilizing the Ginoux et al. (2001) parameterization. Static geographical fields such as “erod” (erodibility representing the areas from where dust aerosols can be emitted), clayfrac and sandfrac required for dust emissions are mapped to the MPAS-GOCART domain along with the processing of other static geographical fields (see Section 1.3 of [MPAS tutorial guide](https://www2.mmm.ucar.edu/projects/mpas/tutorial/Howard2024/index.html) for processing these fields). Sea-salt aerosols also use five size bins, specifically with radii of 0.079, 0.316, 1.119, 2.818, and 7.772 µm. Emissions for sea-salt are calculated using the Gong (2003) wind-driven parameterization, but this includes two key modifications: first, friction velocity has replaced the 10m wind speed, which is required for tuning the parameterization's constants; and second, a correction term dependent on sea surface temperature was added. This temperature-dependent modification is similar to the approach by Jaegle et al. (2011) but was specifically tuned to improve agreement between the simulated sea-salt AOD and MODIS-retrieved AOD.
 
 ### **References**
 
@@ -91,14 +93,14 @@ A detailed documentation of all the chemistry namelist options will be generated
 
 ### **Workflow for preparing a MPAS-GOCART2G simulation**
 
-Figure 2 displays the workflow for preparing a MPAS-GOCART2G simulation. The lefthand column (boxes outlined in blue) are detailed in Chapter 1 and the righthand column (boxes outlined in purple) are described in Chapter 2\. 
+Figure 2 displays the workflow for preparing a MPAS-GOCART2G simulation. The lefthand column are detailed in Chapter 1 and the righthand column (boxes outlined in purple) are described in Chapter 2\. 
 
 ```{figure} static/MPAS_GOCART2G_Inst_F2.png
 :alt: MPAS-GOCART2G Workflow Diagram
 :align: center
 :width: 100%
 
-**Figure 2.** Workflow for preparing MPAS-GOCART2G simulations. Boxes shaded in blue are described in the MPAS-A Tutorial Guide. Boxes shaded in yellow are tasks specific to the GOCART-2G configuration. The gray boxes are MPAS-ready files from the pre-processing steps and the green boxes are the MPAS-GOCART2G executables and output files.
+**Figure 2.** Workflow for preparing MPAS-GOCART2G simulations. Boxes shaded in blue and red are described in the MPAS-A Tutorial Guide and MPAS-GOCART2G github README.md file, respectively. Boxes shaded in yellow are tasks specific to the GOCART-2G configuration. The gray boxes are MPAS-ready files from the pre-processing steps and the green boxes are the MPAS-GOCART2G executables and output files.
 ```
 
 ## **Chapter 1 Becoming Familiar with running a MPAS-GOCART2G Simulation**
@@ -128,25 +130,28 @@ cp \-rp /glade/campaign/acom/MUSICA/MPAS/gocartMPAS .
 The *gocartMPAS* directory should be created with the MPAS-GOCART2G source code. The directory should include the following:  
 ls \-l gocartMPAS/  
 total 74  
-drwxrwxr-x+  4 barthm acom-weather 16384 Sep 15 11:33 cmake/  
-\-rwxrwxr-x+  1 barthm acom-weather  8128 Sep 15 11:33 CMakeLists.txt\*  
-drwxrwxr-x+  3 barthm acom-weather 16384 Sep 15 11:33 docs/  
-\-rwxrwxr-x+  1 barthm acom-weather  3131 Sep 15 11:33 INSTALL\*  
-\-rwxrwxr-x+  1 barthm acom-weather  2311 Sep 15 11:33 LICENSE\*  
-\-rwxrwxr-x+  1 barthm acom-weather 55424 Sep 15 11:33 Makefile\*  
-\-rwxrwxr-x+  1 barthm acom-weather  2811 Sep 15 11:33 README.md\*  
-drwxrwxr-x+ 14 barthm acom-weather 16384 Sep 15 11:33 src/  
-drwxrwxr-x+  5 barthm acom-weather 16384 Sep 15 11:33 testing\_and\_setup/
+drwxrwxr-x+  4 USER acom-weather 16384 Sep 15 11:33 cmake/  
+\-rwxrwxr-x+  1 USER acom-weather  8128 Sep 15 11:33 CMakeLists.txt\*  
+drwxrwxr-x+  3 USER acom-weather 16384 Sep 15 11:33 docs/  
+\-rwxrwxr-x+  1 USER acom-weather  3131 Sep 15 11:33 INSTALL\*  
+\-rwxrwxr-x+  1 USER acom-weather  2311 Sep 15 11:33 LICENSE\*  
+\-rwxrwxr-x+  1 USER acom-weather 55424 Sep 15 11:33 Makefile\*  
+\-rwxrwxr-x+  1 USER acom-weather  2811 Sep 15 11:33 README.md\*  
+drwxrwxr-x+ 14 USER acom-weather 16384 Sep 15 11:33 src/  
+drwxrwxr-x+  5 USER acom-weather 16384 Sep 15 11:33 testing\_and\_setup/
 
 ### Compile MPAS-GOCART2G:
 
 Compiling MPAS-GOCART2G follows the same steps as that for MPAS-A compilation. Please follow the steps outlined in chapter 1.2 of the [MPAS-A Tutorial Practice Guide](https://www2.mmm.ucar.edu/projects/mpas/tutorial/Virtual2026/). For those who are familiar with compiling MPAS-A, the commands are the following:
 
 cd gocartMPAS  
+qcmd \-A $PROJ \-- make gnu CORE=init\_atmosphere GOCART2G=true AUTOCLEAN=true  
+qcmd \-A $PROJ \-- make gnu CORE=atmosphere GOCART2G=true AUTOCLEAN=true
+
+where $PROJ is the NCAR HPC Derecho project account key that your work is charged to. If you don’t have access to Derecho, please refer to job submission guidelines for your local HPC. If you want to debug your simulation because of an error, you can compile the code with the DEBUG option turned on:
+
 qcmd \-A $PROJ \-- make gnu CORE=init\_atmosphere GOCART2G=true AUTOCLEAN=true DEBUG=true  
 qcmd \-A $PROJ \-- make gnu CORE=atmosphere GOCART2G=true AUTOCLEAN=true DEBUG=true
-
-where $PROJ is the NCAR HPC Derecho project account key that your work is charged to. If you don’t have access to Derecho, please refer to job submission guidelines for your local HPC. 
 
 When the compilation of both init\_atmosphere and atmosphere are successful, the directory now has several input files needed to run MPAS-A (see the [MPAS-A Tutorial Practice Guide](https://www2.mmm.ucar.edu/projects/mpas/tutorial/Virtual2025/) for more information). There are also now the following executable, namelist, and streams files.
 
@@ -221,9 +226,9 @@ The init\_atmosphere code creates the init\_chems\_emissions.nc file, which cont
 As the atmosphere code integrates through the simulation, the following hourly output files are created:
 
 * 163842.output.2024-10-15\_0\*.00.00.nc — These files contain selected variables (including aerosol concentrations) specified in “stream\_list.output” .   
-* 163842.diagnostics.2024-10-15\_0\*.[00.00.nc](http://00.00.nc) – These contain the reflectance variables listed in the “stream\_list.diagnostics” 
+* 163842.diagnostics.2024-10-15\_0\*.00.00.nc – These files contain the variables listed in the “stream\_list.diagnostics” 
 
-You will not generate the 163842.restart.2024-10\*.nc files with this example run as the defined output timestep is 12:00 hours, and the simulation timestep is only 3 hours. Restart files are checkpoints of the model state and can be used to restart a simulation from the point they are written.  
+You will not generate the 163842.restart.2024-10\*.nc files with this example run as the defined restart timestep is 12:00 hours, and the simulation run time is only 3 hours. Restart files are checkpoints of the model state and can be used to restart a simulation from the point they are written.  
 
 Chapter 2 (Section 5\) discusses the definition of output in the streams file in more detail allowing for more control and flexibility in MPAS-GOCART2G simulations. 
 
