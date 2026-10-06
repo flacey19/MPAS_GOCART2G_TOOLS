@@ -255,31 +255,25 @@ This chapter provides information on setting up a different case using the same 
 3. Preparation of the emissions (anthropogenic, biogenic, biomass burning)  
 4. Linking to data for the prescribed oxidant fields 
 
-Two case studies are presented because obtaining the MERRA2 data used for initializing GOCART2G trace gases and aerosols has different procedures for before and after 2020\. 
 
-1. ### Preparation of Meteorology Fields
+### 1. Preparation of Meteorology Fields
 
-**For case studies after 2020-01-01:** A 1-month spin-up of the GOCART-2G fields is needed before running the case study. Therefore, *obtain meteorology input data starting 2 weeks before the start of the case study*. The end date should be the same as the end date for the case study. 
+A 2-week spin-up of the GOCART-2G fields is needed before running the case study. Therefore, *obtain meteorology input data starting 2 weeks before the start of the case study*. The end date should be the same as the end date for the case study. 
 
 When following these instructions for the first time, we recommend using the same 60-km uniform grid mesh as that used in Chapter 1, but for a different time period. Once you are comfortable with the pre-processing steps, then testing other grid meshes is encouraged. The instructions to set up the grid mesh and static fields can be found in chapter 1.3 of the <a href="https://www2.mmm.ucar.edu/projects/mpas/tutorial/Virtual2026/" target="_blank" rel="noopener noreferrer">MPAS Tutorial - Practice Guide</a>,
 
 The steps to obtain meteorology datasets (either GFS or ERA) and converting them to an intermediate file format that *init\_atmosphere\_model* are presented in the <a href="https://www2.mmm.ucar.edu/projects/mpas/tutorial/Virtual2026/" target="_blank" rel="noopener noreferrer">MPAS Tutorial - Practice Guide</a>) in Section 2\. After following the instructions in the MPAS-A tutorial, several met\_data files (either “GFS:yyyy-mm-dd-hh” or “ERA5:yyyy-mm-dd-hh”) should be in a newly created met\_data/ directory. 
 
-2. ### Getting MERRA data and convert to MPAS intermediate files
+### 2. Getting MERRA data and convert to MPAS intermediate files
 
 MERRA2 files provide initial concentrations for the predicted fields as well as HNO3, NH3, CO, and isoprene. The HNO3 and NH3 are used for the thermodynamics calculation of the SO4-NH4-NO3 system. Isoprene and CO are used for the simplified SOA production. 
 
-The [appendix below](#appendix-a:-generating-downloading-and-merra2-intermediate-files) provides information on how to download MERRA data from the NASA Earthdata site. You will need to have an NASA Earthdata user name and password to download the data when running the python script. 
+Appendix A provides information on how to download MERRA data from the NASA Earthdata site. You will need to have an NASA Earthdata user name and password to download the data when running the python script. 
 
 Once the MERRA input files are in a local directory, converting the MERRA data to the MPAS-A grid mesh can be done with the python MERRA processing script, *run\_processing.py*. The script and instructions for running the script can be found on the [MERRA IC github page](https://github.com/PACE-DAAQ/MPAS-GOCART2G_MERRA_IC.git).
 
-**Preparation of Chemistry Input Fields for Cases Before 2020**  
-All the species are available in the MERRA2 files and one should be able to proceed according to the instructions. 
 
-**Preparation of Chemistry Input Fields for Cases 2020 and Later**  
-The MERRA2 files for cases after 2019 do not include initialization of nitrate aerosols or ammonia. Therefore it is best to spin-up their concentrations in the atmosphere by running a spin-up simulation for one month. Be sure to prepare your case study to include the 1-month spin-up time. 
-
-3. ### Preparation of the Emissions via UPTEMPO
+### 3. Preparation of the Emissions via UPTEMPO
 
 The emissions preprocessor, UPTEMPO, is a python script. To get the UPTEMPO scripts, clone the code from Github:  
 git clone [https://github.com/PACE-DAAQ/UPTEMPO](https://github.com/PACE-DAAQ/UPTEMPO) UPTEMPO
@@ -287,6 +281,7 @@ git clone [https://github.com/PACE-DAAQ/UPTEMPO](https://github.com/PACE-DAAQ/UP
 To run UPTEMPO you can either use your Terminal or submit a job to Derecho’s PBS system. 
 
 Go to the [UPTEMPO github page](https://github.com/PACE-DAAQ/UPTEMPO/tree/main) and follow the instructions in the README files.   
+
 For processing **anthropogenic emissions** from the CAMS inventory: README\_CAMS.md
 
 The *config\_cams\_anth\_regrid.yaml* file lists directories pointing to the CAMS v6.2 emissions for January 2001 to 2024 and the MPAS uniform 60-km grid mesh. In case the directories on Derecho do not have emissions for the year of your study, you can download those from the ECCAD database. Here is the ECCAD user’s guide: <a href="https://eccad.aeris-data.fr/user_guide/" target="_blank" rel="noopener noreferrer">ECCAD - Users Guide</a>. Make sure you download all the sectors because GOCART-2G requires sectoral information for different species.
@@ -305,9 +300,9 @@ Important: You will need to set the YAML flag to file\_type: ‘daily’ as the 
 
 Copy the text files downloaded either from GDEX (/gdex/data/d312009/2012\_eachfire\_modisviirs/FINNv2.5\_modvrs\_MOZART\_\*.[txt.gz](http://txt.gz)) or the website to your local directory where you can uncompress the file (using the “gunzip” command on linux). 
 
-4. ### Background Oxidants Data and Aerosol Optical Properties Data
+### 4. Background Oxidants Data and Aerosol Optical Properties Data
 
-Background oxidant data is currently produced using climatological GMI simulations, similar to WRF-Chem. These background oxidant data files are located in the following directory:
+Background oxidant data is currently produced using climatological GMI simulations. These background oxidant data files are located in the following directory:
 
 /glade/campaign/acom/MUSICA/MPAS/input/BACKGROUND
 
@@ -320,9 +315,10 @@ Aerosol optical properties are from Chin et al., 2002\. These data files are loc
 The submit\_mpas\_gocart.bash script links to this directory, so no changes by the user are needed.
 
 If you would like to use different background or aerosol optical property data files, then simply create those files in the same format as those provided in the directory and modify the *submit\_mpas\_gocart.bash* script to link to the new files.   
-*Note:* In the near future obtaining the background oxidants data from WACCM output will become available.  
 
-5. ### Modification of streams.init\_atmosphere and streams.atmosphere
+*Note:* In the future, obtaining the background oxidants data from WACCM output will become available.  
+
+### 5. Modification of streams.init\_atmosphere and streams.atmosphere
 
 When MPAS-GOCART2G is compiled, two streams files, *streams.init\_atmosphere* and *streams.atmosphere*, are created. More information on what these two files are and what information is contained in them is given in [Chapter 5 of the MPAS User’s Guide](https://www2.mmm.ucar.edu/projects/mpas/site/documentation/users_guide/configuring_io.html). For MPAS-GOCART2G and as noted in [Chapter 1](https://docs.google.com/document/d/122fPMFRE7-R-C53rPbVrAkL_NUjAZc8WCPjhhH0ru4s/edit?tab=t.0#bookmark=id.7pmv7eg2ok80) of these instructions, MPAS-GOCART2G I/O requires input streams for anthropogenic, biomass burning, and biogenic emissions. 
 
@@ -332,7 +328,7 @@ Also ensure that the *submit\_mpas\_gocart.bash* script will link to the streams
 
 For adding in user defined streams, follow the instructions found in Section 6.2 of the [MPAS-A Tutorial Practice Guide](https://www2.mmm.ucar.edu/projects/mpas/tutorial/Virtual2025/). In short, output streams can be defined using either variable names or a text file (stream\_list) containing a list of desired output variables. Here is an example of each method: 
 
-Using variable definition add this as a new code block to the stream.atmosphere file: 
+Using variable definition add this as a new code block to the *streams.atmosphere* file: 
 
 **\<stream name="sfc\_winds"**  
         **type="output"**  
@@ -349,7 +345,7 @@ Or, using a file called “stream\_list.sfc\_winds” that contains the followin
 **u10**  
 **v10**
 
-You can add in a new stream (identical to the one above) into streams.atmosphere using the following code block: 
+You can add in a new stream (identical to the one above) into *streams.atmosphere* using the following code block: 
 
 **\<stream name="sfc\_winds"**  
         **type="output"**  
@@ -365,13 +361,13 @@ stream\_list.atmosphere.output
 stream\_list.atmosphere.surface  
 And contain information about what fields to output during the simulation. 
 
-## **Appendix A:  Generating Downloading and MERRA2 Intermediate Files** {#appendix-a:-generating-downloading-and-merra2-intermediate-files}
+## **Appendix A:  Downloading MERRA2 Files** 
 
 This section describes the procedure for (1) downloading, (2) preparing, and (3) generating the MPAS required MERRA2 fields for GOCART simulations using aerosol and nitrate precursor concentrations. 
 
-Note: The MERRA2 reanalysis product contains all fields needed to run through the end of 2019\. For Runs past this point, the files can be used, but a two-week spinup is recommended to correct for use of prior year nitrate concentrations. 
+Note: To accommodate the need for a 2-week spin-up of the gases and aerosols for MPAS-GOCART2G simulations, be sure to obtain and process MERRA data for the spin-up period as well as the simulation time frame. 
 
-1) Two different sets of MERRA2 files are needed to populate the chemical fields needed for GOCART, this first being for aerosol species “inst3\_3d\_aer\_Nv” and the second being for the gaseous species “inst0\_3d\_ovp\_Nv”. 
+Two different sets of MERRA2 files are needed to populate the chemical fields needed for GOCART, this first being for aerosol species “inst3\_3d\_aer\_Nv” and the second being for the gaseous species “inst0\_3d\_ovp\_Nv”. 
 
 To download the correct files, the first step is to copy the following shell script into a temporary location with adequate storage capacity for processing (\~15 Gb per day needed), for the purposes of this example we will assume this is completed on Derecho’s scratch directory: 
 
@@ -445,7 +441,8 @@ All of the fields needed for MPAS-GOCART2G are listed in the MERRA\_IC config.ya
 
 [Back to MERRA processing instructions](#bookmark=kix.1aikzrhboh1a)
 
-## **Appendix B: Visualization of MPAS output** {#appendix-b:-visualization-of-mpas-output}
+
+## **Appendix B: Visualization of MPAS output**
 
 MPAS-GOCART2G uses a variable-resolution, unstructured spherical centroidal Voronoi mesh for simulation and therefore traditional lat/lon visualization methods (i.e. NCVIEW) do not work with input and output files. Therefore simplified tools have been developed for quick visualization of MPAS files. 
 
@@ -516,7 +513,7 @@ Which will give you an output file of [latlon.nc](http://latlon.nc) which has al
 
 ### **JupyterLab notebook Python script**
 
-**The final method** discussed here is using JupyterLab notebooks and provides the most interactive plotting method. To use this method, users should be comfortable running JupyterHub or JupyterLab on the Derecho of home environments, and more detail can be found here for the NCAR Derecho environment: 
+**The final method** is using JupyterLab notebooks and provides the most interactive plotting method. To use this method, users should be comfortable running JupyterHub or JupyterLab on the Derecho of home environments, and more detail can be found here for the NCAR Derecho environment: 
 
 [https://ncar-hpc-docs.readthedocs.io/en/latest/compute-systems/jupyterhub/](https://ncar-hpc-docs.readthedocs.io/en/latest/compute-systems/jupyterhub/) 
 
