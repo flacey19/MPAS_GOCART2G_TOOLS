@@ -2,7 +2,7 @@
 
 The instructions are tailored for running MPAS-GOCART2G on the NSF NCAR HPC system called Derecho.
 
-These instructions combine information from both the [MPAS Tutorial \- Practice Guide](https://www2.mmm.ucar.edu/projects/mpas/tutorial/Virtual2026/) and the specific instructions for running with GOCART-2G aerosols. Be sure to go to the [MPAS Home page](https://mpas-dev.github.io/) and [MPAS-Atmosphere webpage](https://www2.mmm.ucar.edu/projects/mpas/site/index.html) where there is a lot more information and documentation.
+These instructions combine information from both the <a href="https://www2.mmm.ucar.edu/projects/mpas/tutorial/Virtual2026/" target="_blank" rel="noopener noreferrer">MPAS Tutorial - Practice Guide</a> and the specific instructions for running with GOCART-2G aerosols. Be sure to go to the <a href="https://mpas-dev.github.io/" target="_blank" rel="noopener noreferrer">MPAS Home page</a> and <a href="https://www2.mmm.ucar.edu/projects/mpas/site/index.html" target="_blank" rel="noopener noreferrer">MPAS-Atmosphere webpage</a> where there is a lot more information and documentation.
 
 ## **Table of Contents**
 
@@ -40,7 +40,7 @@ Biogenic emissions are read from pre-calculated emissions files available in the
 
 Biomass burning emissions in MPAS-GOCART-2G are represented using FINN version 2.5.1 (Wiedinmyer et al., 2023). A climatological diurnal profile is applied to distribute the emissions to hourly values. MPAS-GOCART-2G then uniformly mixes the biomass burning emissions within the PBL. To ensure model stability and prevent unrealistically high Aerosol Optical Depth (AOD) values from biomass burning, the model limits biomass burning emissions in such a way that AOD from biomass burning emissions over all time steps in a day cannot exceed AOD = 30.0.  
 
-Dust aerosols are represented using five size bins (radii of 0.73, 1.4, 2.4, 4.5, and 8.0 µm) and their emissions are calculated online within the model utilizing the Ginoux et al. (2001) parameterization. Static geographical fields such as “erod” (erodibility representing the areas from where dust aerosols can be emitted), clayfrac and sandfrac required for dust emissions are mapped to the MPAS-GOCART domain along with the processing of other static geographical fields (see Section 1.3 of [MPAS tutorial guide](https://www2.mmm.ucar.edu/projects/mpas/tutorial/Howard2024/index.html) for processing these fields). Sea-salt aerosols also use five size bins, specifically with radii of 0.079, 0.316, 1.119, 2.818, and 7.772 µm. Emissions for sea-salt are calculated using the Gong (2003) wind-driven parameterization, but this includes two key modifications: first, friction velocity has replaced the 10m wind speed, which is required for tuning the parameterization's constants; and second, a correction term dependent on sea surface temperature was added. This temperature-dependent modification is similar to the approach by Jaegle et al. (2011) but was specifically tuned to improve agreement between the simulated sea-salt AOD and MODIS-retrieved AOD.
+Dust aerosols are represented using five size bins (radii of 0.73, 1.4, 2.4, 4.5, and 8.0 µm) and their emissions are calculated online within the model utilizing the Ginoux et al. (2001) parameterization. Static geographical fields such as “erod” (erodibility representing the areas from where dust aerosols can be emitted), clayfrac and sandfrac required for dust emissions are mapped to the MPAS-GOCART domain along with the processing of other static geographical fields (see Section 1.3 of <a href="https://www2.mmm.ucar.edu/projects/mpas/tutorial/Virtual2026/" target="_blank" rel="noopener noreferrer">MPAS Tutorial - Practice Guide</a> for processing these fields). Sea-salt aerosols also use five size bins, specifically with radii of 0.079, 0.316, 1.119, 2.818, and 7.772 µm. Emissions for sea-salt are calculated using the Gong (2003) wind-driven parameterization, but this includes two key modifications: first, friction velocity has replaced the 10m wind speed, which is required for tuning the parameterization's constants; and second, a correction term dependent on sea surface temperature was added. This temperature-dependent modification is similar to the approach by Jaegle et al. (2011) but was specifically tuned to improve agreement between the simulated sea-salt AOD and MODIS-retrieved AOD.
 
 ### **References**
 
@@ -107,7 +107,7 @@ Figure 2 displays the workflow for preparing a MPAS-GOCART2G simulation. The lef
 
 ### Prerequisites
 
-MPAS-A requires that your Derecho environment is set up with available capabilities, such as MPI-2, NetCDF-4, PnetCDF, and PIO libraries. To learn how to set up your environment, please see the instructions in Chapter 0 of the [MPAS-A Tutorial Practice Guide](https://www2.mmm.ucar.edu/projects/mpas/tutorial/Virtual2025/). 
+MPAS-A requires that your Derecho environment is set up with available capabilities, such as MPI-2, NetCDF-4, PnetCDF, and PIO libraries. To learn how to set up your environment, please see the instructions in Chapter 0 of the <a href="https://www2.mmm.ucar.edu/projects/mpas/tutorial/Virtual2026/" target="_blank" rel="noopener noreferrer">MPAS Tutorial - Practice Guide</a>. 
 
 Note: If you are using tcsh instead of bash, the PATH can be set as:  
 setenv PATH /glade/campaign/mmm/wmr/mpas\_tutorial/metis/bin:${PATH}
@@ -142,7 +142,7 @@ drwxrwxr-x+  5 USER acom-weather 16384 Sep 15 11:33 testing\_and\_setup/
 
 ### Compile MPAS-GOCART2G:
 
-Compiling MPAS-GOCART2G follows the same steps as that for MPAS-A compilation. Please follow the steps outlined in chapter 1.2 of the [MPAS-A Tutorial Practice Guide](https://www2.mmm.ucar.edu/projects/mpas/tutorial/Virtual2026/). For those who are familiar with compiling MPAS-A, the commands are the following:
+Compiling MPAS-GOCART2G follows the same steps as that for MPAS-A compilation. Please follow the steps outlined in chapter 1.2 of the <a href="https://www2.mmm.ucar.edu/projects/mpas/tutorial/Virtual2026/" target="_blank" rel="noopener noreferrer">MPAS Tutorial - Practice Guide</a>. For those who are familiar with compiling MPAS-A, the commands are the following:
 
 cd gocartMPAS  
 qcmd \-A $PROJ \-- make gnu CORE=init\_atmosphere GOCART2G=true AUTOCLEAN=true  
@@ -153,7 +153,7 @@ where $PROJ is the NCAR HPC Derecho project account key that your work is charge
 qcmd \-A $PROJ \-- make gnu CORE=init\_atmosphere GOCART2G=true AUTOCLEAN=true DEBUG=true  
 qcmd \-A $PROJ \-- make gnu CORE=atmosphere GOCART2G=true AUTOCLEAN=true DEBUG=true
 
-When the compilation of both init\_atmosphere and atmosphere are successful, the directory now has several input files needed to run MPAS-A (see the [MPAS-A Tutorial Practice Guide](https://www2.mmm.ucar.edu/projects/mpas/tutorial/Virtual2025/) for more information). There are also now the following executable, namelist, and streams files.
+When the compilation of both init\_atmosphere and atmosphere are successful, the directory now has several input files needed to run MPAS-A (see the <a href="https://www2.mmm.ucar.edu/projects/mpas/tutorial/Virtual2026/" target="_blank" rel="noopener noreferrer">MPAS Tutorial - Practice Guide</a> for more information). There are also now the following executable, namelist, and streams files.
 
 init\_atmosphere\_model\*  
 atmosphere\_model\*  
@@ -169,7 +169,7 @@ stream\_list.atmosphere.surface
 streams.atmosphere  
 streams.init\_atmosphere
 
-For more information about these files, see the [MPAS-A Tutorial Practice Guide](https://www2.mmm.ucar.edu/projects/mpas/tutorial/Virtual2025/). 
+For more information about these files, see the <a href="https://www2.mmm.ucar.edu/projects/mpas/tutorial/Virtual2026/" target="_blank" rel="noopener noreferrer">MPAS Tutorial - Practice Guide</a>. 
 
 **The next step** is to create the look-up tables used by the Thompson microphysics scheme by issuing the following command. 
 
@@ -184,7 +184,7 @@ As suggested by the program output, copy these files to the src/core\_atmosphere
 
 ### MPAS-GOCART2G I/O: 
 
-Similar to MPAS-A, the reading and writing of model fields MPAS-GOCART2G is handled by user-configurable streams. We refer the users to MPAS-A User’s guide to familiarize themselves with these streams ([https://www2.mmm.ucar.edu/projects/mpas/site/documentation/users\_guide/configuring\_io.html](https://www2.mmm.ucar.edu/projects/mpas/site/documentation/users_guide/configuring_io.html)). In addition to the standard MPAS output, the MPAS-GOCART2G I/O requires input streams for anthropogenic, biomass burning, and biogenic emissions and output streams for three-dimensional output of aerosols and related variables, diagnostic variables (e.g., total PM2.5, total and individual species AOD at 550 nm, Angstrom exponent, etc.). Example stream files are provided with the MPAS-GOCART2G release.    
+Similar to MPAS-A, the reading and writing of model fields MPAS-GOCART2G is handled by user-configurable streams. We refer the users to MPAS-A User’s guide to familiarize themselves with these streams (<a href="https://www2.mmm.ucar.edu/projects/mpas/site/documentation/users_guide/configuring_io.html" target="_blank" rel="noopener noreferrer">MPAS IO</a>). In addition to the standard MPAS output, the MPAS-GOCART2G I/O requires input streams for anthropogenic, biomass burning, and biogenic emissions and output streams for three-dimensional output of aerosols and related variables, diagnostic variables (e.g., total PM2.5, total and individual species AOD at 550 nm, Angstrom exponent, etc.). Example stream files are provided with the MPAS-GOCART2G release.    
 
 ### Running MPAS-GOCART2G: Example 1
 
@@ -236,7 +236,7 @@ Chapter 2 (Section 5\) discusses the definition of output in the streams file in
 
 For viewing model output to confirm that the model is running correctly, we recommend converting the model output to a regular latitude-longitude grid using the *convert\_mpas* tool. The converted output (on a latitude-longitude grid) can then be viewed using the *ncview* command or with plotting scripts. 
 
-Section 3.4 of the [MPAS-A Tutorial Practice Guide](https://www2.mmm.ucar.edu/projects/mpas/tutorial/Virtual2025/) describes how to obtain the *convert\_mpas* tool and compile it. An example command line for running *convert\_mpas* (we recommend adding the full path of convert\_mpas to your $PATH so that you can use it in any directory) is given here.
+Section 3.4 of the <a href="https://www2.mmm.ucar.edu/projects/mpas/tutorial/Virtual2026/" target="_blank" rel="noopener noreferrer">MPAS Tutorial - Practice Guide</a>) describes how to obtain the *convert\_mpas* tool and compile it. An example command line for running *convert\_mpas* (we recommend adding the full path of convert\_mpas to your $PATH so that you can use it in any directory) is given here.
 
 convert\_mpas x1.163842.static\_chems.nc 163842.output.2024-10-15\_03.00.00.nc
 
@@ -261,9 +261,9 @@ Two case studies are presented because obtaining the MERRA2 data used for initia
 
 **For case studies after 2020-01-01:** A 1-month spin-up of the GOCART-2G fields is needed before running the case study. Therefore, *obtain meteorology input data starting 2 weeks before the start of the case study*. The end date should be the same as the end date for the case study. 
 
-When following these instructions for the first time, we recommend using the same 60-km uniform grid mesh as that used in Chapter 1, but for a different time period. Once you are comfortable with the pre-processing steps, then testing other grid meshes is encouraged. The instructions to set up the grid mesh and static fields can be found in chapter 1.3 of the [MPAS-A Tutorial Practice Guide](https://www2.mmm.ucar.edu/projects/mpas/tutorial/Virtual2025/),
+When following these instructions for the first time, we recommend using the same 60-km uniform grid mesh as that used in Chapter 1, but for a different time period. Once you are comfortable with the pre-processing steps, then testing other grid meshes is encouraged. The instructions to set up the grid mesh and static fields can be found in chapter 1.3 of the <a href="https://www2.mmm.ucar.edu/projects/mpas/tutorial/Virtual2026/" target="_blank" rel="noopener noreferrer">MPAS Tutorial - Practice Guide</a>,
 
-The steps to obtain meteorology datasets (either GFS or ERA) and converting them to an intermediate file format that *init\_atmosphere\_model* are presented in the [MPAS-A Tutorial Practice Guide](https://www2.mmm.ucar.edu/projects/mpas/tutorial/Virtual2025/) in Section 2\. After following the instructions in the MPAS-A tutorial, several met\_data files (either “GFS:yyyy-mm-dd-hh” or “ERA5:yyyy-mm-dd-hh”) should be in a newly created met\_data/ directory. 
+The steps to obtain meteorology datasets (either GFS or ERA) and converting them to an intermediate file format that *init\_atmosphere\_model* are presented in the <a href="https://www2.mmm.ucar.edu/projects/mpas/tutorial/Virtual2026/" target="_blank" rel="noopener noreferrer">MPAS Tutorial - Practice Guide</a>) in Section 2\. After following the instructions in the MPAS-A tutorial, several met\_data files (either “GFS:yyyy-mm-dd-hh” or “ERA5:yyyy-mm-dd-hh”) should be in a newly created met\_data/ directory. 
 
 2. ### Getting MERRA data and convert to MPAS intermediate files
 
@@ -289,7 +289,7 @@ To run UPTEMPO you can either use your Terminal or submit a job to Derecho’s P
 Go to the [UPTEMPO github page](https://github.com/PACE-DAAQ/UPTEMPO/tree/main) and follow the instructions in the README files.   
 For processing **anthropogenic emissions** from the CAMS inventory: README\_CAMS.md
 
-The *config\_cams\_anth\_regrid.yaml* file lists directories pointing to the CAMS v6.2 emissions for January 2001 to 2024 and the MPAS uniform 60-km grid mesh. In case the directories on Derecho do not have emissions for the year of your study, you can download those from the ECCAD database. Here is the ECCAD user’s guide: [https://eccad.aeris-data.fr/user\_guide/](https://eccad.aeris-data.fr/user_guide/). Make sure you download all the sectors because GOCART-2G requires sectoral information for different species.
+The *config\_cams\_anth\_regrid.yaml* file lists directories pointing to the CAMS v6.2 emissions for January 2001 to 2024 and the MPAS uniform 60-km grid mesh. In case the directories on Derecho do not have emissions for the year of your study, you can download those from the ECCAD database. Here is the ECCAD user’s guide: <a href="https://eccad.aeris-data.fr/user_guide/" target="_blank" rel="noopener noreferrer">ECCAD - Users Guide</a>. Make sure you download all the sectors because GOCART-2G requires sectoral information for different species.
 
 For processing **biogenic emissions** from the CAMS inventory: README\_CAMS\_BIOG.md
 
@@ -298,9 +298,9 @@ The pre-processing for biogenic emissions uses a climatological dataset, so it i
 For processing **biomass burning emissions** from the FINN2.5 inventory: README\_FINN.md
 
 Getting FINNv2.5 data input files:  
-For 2012-2023 the FINNv2.5 data input files are available on the Geoscience Data Exchange (GDEX) website [GDEX Fire Inventory from NCAR database](https://gdex.ucar.edu/datasets/d312009/). After reading the description of the data, click on Data Access. On Derecho, you can make use of the NCAR Data Storage System Holdings. You will want the “eachfire modisviirs: Global daily emissions for each file at 1 km resolution, the base and speciated VOCS based on MODISVIIRS data” (last row of the table) data. For annual text files you will need to use the file\_type: ‘annual’ in the YAML file. 
+For 2012-2023 the FINNv2.5 data input files are available on the Geoscience Data Exchange (GDEX) website <a href="https://gdex.ucar.edu/datasets/d312009/" target="_blank" rel="noopener noreferrer">GDEX Fire Inventory from NCAR database</a>. After reading the description of the data, click on Data Access. On Derecho, you can make use of the NCAR Data Storage System Holdings. You will want the “eachfire modisviirs: Global daily emissions for each file at 1 km resolution, the base and speciated VOCS based on MODISVIIRS data” (last row of the table) data. For annual text files you will need to use the file\_type: ‘annual’ in the YAML file. 
 
-For 2024-present, you will need to get the daily near real time data files from [https://www.acom.ucar.edu/acresp/MODELING/finn\_emis\_txt/](https://www.acom.ucar.edu/acresp/MODELING/finn_emis_txt/).   
+For 2024-present, you will need to get the daily near real time data files from <a href="https://www.acom.ucar.edu/acresp/MODELING/finn_emis_txt/" target="_blank" rel="noopener noreferrer">FINN Emission text files</a>.   
 Important: You will need to set the YAML flag to file\_type: ‘daily’ as the configuration. 
 
 Copy the text files downloaded either from GDEX (/gdex/data/d312009/2012\_eachfire\_modisviirs/FINNv2.5\_modvrs\_MOZART\_\*.[txt.gz](http://txt.gz)) or the website to your local directory where you can uncompress the file (using the “gunzip” command on linux). 
