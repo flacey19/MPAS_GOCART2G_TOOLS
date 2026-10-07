@@ -8,7 +8,7 @@ These instructions combine information from both the <a href="https://www2.mmm.u
 
 **Background chapter** provides a brief description of the MPAS-GOCART-2G model. 
 
-**Chapter 1**gives instructions on running a case where all the input files are provided. It allows the new user to become familiar with the workflow in preparing a MPAS-GOCART2G simulation and is great for ensuring that the user has configured their system properly. 
+**Chapter 1** gives instructions on running a case where all the input files are provided. It allows the new user to become familiar with the workflow in preparing a MPAS-GOCART2G simulation and is great for ensuring that the user has configured their system properly. 
 
 **Chapter 2** provides information on setting up your own case using the same grid mesh as in chapter 1 but running a different time period, including where to obtain input files and running the program *init\_atmosphere* which sets up the MPAS-GOCART2G simulation. 
 
