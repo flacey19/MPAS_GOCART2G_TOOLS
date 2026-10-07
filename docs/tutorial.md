@@ -6,11 +6,11 @@ These instructions combine information from both the <a href="https://www2.mmm.u
 
 ## **Table of Contents**
 
-[**Background chapter**](#bookmark=kix.sicppxv9hx6) provides a brief description of the MPAS-GOCART-2G model. 
+**Background chapter** provides a brief description of the MPAS-GOCART-2G model. 
 
-[**Chapter 1**](#bookmark=kix.rxyhj8v1l1ab) gives instructions on running a case where all the input files are provided. It allows the new user to become familiar with the workflow in preparing a MPAS-GOCART2G simulation and is great for ensuring that the user has configured their system properly. 
+**Chapter 1**gives instructions on running a case where all the input files are provided. It allows the new user to become familiar with the workflow in preparing a MPAS-GOCART2G simulation and is great for ensuring that the user has configured their system properly. 
 
-[**Chapter 2**](#chapter-2-setting-up-a-different-case) provides information on setting up your own case using the same grid mesh as in chapter 1 but running a different time period, including where to obtain input files and running the program *init\_atmosphere* which sets up the MPAS-GOCART2G simulation. 
+**Chapter 2** provides information on setting up your own case using the same grid mesh as in chapter 1 but running a different time period, including where to obtain input files and running the program *init\_atmosphere* which sets up the MPAS-GOCART2G simulation. 
 
 **Chapter 3** provides information on running with a variable resolution grid mesh and setting up different variable resolution grids. 
 
@@ -117,10 +117,10 @@ setenv PATH /glade/campaign/mmm/wmr/mpas\_tutorial/metis/bin:${PATH}
 First, go to a directory where you would like to store the MPAS-GOCART2G source code, such as the /glade/work/$USER directory where $USER is your login name on Derecho.  
 cd  /glade/work/$USER
 
-Depending on the version and host repository of the model, especially for development branches, you may need to set up an SSH key for the Derecho environment. Instructions for this can be found on this page [Populating GitHub SSH Keys and Agents](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent).
+Depending on the version and host repository of the model, especially for development branches, you may need to set up an SSH key for the Derecho environment. Instructions for this can be found on this page <a href="https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent" target="_blank" rel="noopener noreferrer">Populating GitHub SSH Keys and Agents</a>.
 
 Next, clone the code from Github or copy a version from campaign storage.   
-git clone [https://github.com/TBD\_Name](https://github.com/TBD_Name) gocartMPAS 
+git clone https://github.com/NCAR/MPAS-GOCART2G gocartMPAS 
 
 Or copy the code from the ACOM campaign storage location:
 
@@ -145,13 +145,13 @@ drwxrwxr-x+  5 USER acom-weather 16384 Sep 15 11:33 testing\_and\_setup/
 Compiling MPAS-GOCART2G follows the same steps as that for MPAS-A compilation. Please follow the steps outlined in chapter 1.2 of the <a href="https://www2.mmm.ucar.edu/projects/mpas/tutorial/Virtual2026/" target="_blank" rel="noopener noreferrer">MPAS Tutorial - Practice Guide</a>. For those who are familiar with compiling MPAS-A, the commands are the following:
 
 cd gocartMPAS  
-qcmd \-A $PROJ \-- make gnu CORE=init\_atmosphere GOCART2G=true AUTOCLEAN=true  
-qcmd \-A $PROJ \-- make gnu CORE=atmosphere GOCART2G=true AUTOCLEAN=true
+qcmd \-A $PROJ \-\- make gnu CORE=init\_atmosphere GOCART2G=true AUTOCLEAN=true  
+qcmd \-A $PROJ \-\- make gnu CORE=atmosphere GOCART2G=true AUTOCLEAN=true
 
 where $PROJ is the NCAR HPC Derecho project account key that your work is charged to. If you don’t have access to Derecho, please refer to job submission guidelines for your local HPC. If you want to debug your simulation because of an error, you can compile the code with the DEBUG option turned on:
 
-qcmd \-A $PROJ \-- make gnu CORE=init\_atmosphere GOCART2G=true AUTOCLEAN=true DEBUG=true  
-qcmd \-A $PROJ \-- make gnu CORE=atmosphere GOCART2G=true AUTOCLEAN=true DEBUG=true
+qcmd \-A $PROJ \-\- make gnu CORE=init\_atmosphere GOCART2G=true AUTOCLEAN=true DEBUG=true  
+qcmd \-A $PROJ \-\- make gnu CORE=atmosphere GOCART2G=true AUTOCLEAN=true DEBUG=true
 
 When the compilation of both init\_atmosphere and atmosphere are successful, the directory now has several input files needed to run MPAS-A (see the <a href="https://www2.mmm.ucar.edu/projects/mpas/tutorial/Virtual2026/" target="_blank" rel="noopener noreferrer">MPAS Tutorial - Practice Guide</a> for more information). There are also now the following executable, namelist, and streams files.
 
@@ -242,7 +242,7 @@ convert\_mpas x1.163842.static\_chems.nc 163842.output.2024-10-15\_03.00.00.nc
 
 When *convert\_mpas* is run, it creates a file called *latlon.nc*. Note, if you wish to convert other MPAS-GOCART2G files to a latitude-longitude grid, then you must rename or delete the current latlon.nc file.
 
-More information about plotting MPAS-GOCART2G output is given in [Appendix B](#appendix-b:-visualization-of-mpas-output). Specifically, we recommend using the uxarray within python to plot results on the native grid mesh. 
+More information about plotting MPAS-GOCART2G output is given in **Appendix B**. Specifically, we recommend using the uxarray within python to plot results on the native grid mesh. 
 
 ## **Chapter 2 Setting Up a Different Case**  {#chapter-2-setting-up-a-different-case}
 
@@ -270,17 +270,17 @@ MERRA2 files provide initial concentrations for the predicted fields as well as 
 
 Appendix A provides information on how to download MERRA data from the NASA Earthdata site. You will need to have an NASA Earthdata user name and password to download the data when running the python script. 
 
-Once the MERRA input files are in a local directory, converting the MERRA data to the MPAS-A grid mesh can be done with the python MERRA processing script, *run\_processing.py*. The script and instructions for running the script can be found on the [MERRA IC github page](https://github.com/PACE-DAAQ/MPAS-GOCART2G_MERRA_IC.git).
+Once the MERRA input files are in a local directory, converting the MERRA data to the MPAS-A grid mesh can be done with the python MERRA processing script, *run\_processing.py*. The script and instructions for running the script can be found on the <a href="https://github.com/NCAR_MPAS-GOCART2G/init_MPAS-GOCART2G" target="_blank" rel="noopener noreferrer">init_MPAS_GOCART2G</a>.
 
 
 ### 3. Preparation of the Emissions via UPTEMPO
 
-The emissions preprocessor, UPTEMPO, is a python script. To get the UPTEMPO scripts, clone the code from Github:  
-git clone [https://github.com/PACE-DAAQ/UPTEMPO](https://github.com/PACE-DAAQ/UPTEMPO) UPTEMPO
+The emissions preprocessor, UPTEMPO, is a python script. UPTEMPO is contained within  the MPAS-GOCART2G repository and will be obtained on the initial clone of the MPAS-GOCART2G repository or independently using:  
+git clone https://github.com/NCAR/MPAS-GOCART2G/UPTEMPO UPTEMPO
 
 To run UPTEMPO you can either use your Terminal or submit a job to Derecho’s PBS system. 
 
-Go to the [UPTEMPO github page](https://github.com/PACE-DAAQ/UPTEMPO/tree/main) and follow the instructions in the README files.   
+Go to the <a href="https://github.com/NCAR_MPAS-GOCART2G/UPTEMPO" target="_blank" rel="noopener noreferrer">UPTEMPO</a> and follow the instructions in the README files.   
 
 For processing **anthropogenic emissions** from the CAMS inventory: README\_CAMS.md
 
@@ -298,7 +298,7 @@ For 2012-2023 the FINNv2.5 data input files are available on the Geoscience Data
 For 2024-present, you will need to get the daily near real time data files from <a href="https://www.acom.ucar.edu/acresp/MODELING/finn_emis_txt/" target="_blank" rel="noopener noreferrer">FINN Emission text files</a>.   
 Important: You will need to set the YAML flag to file\_type: ‘daily’ as the configuration. 
 
-Copy the text files downloaded either from GDEX (/gdex/data/d312009/2012\_eachfire\_modisviirs/FINNv2.5\_modvrs\_MOZART\_\*.[txt.gz](http://txt.gz)) or the website to your local directory where you can uncompress the file (using the “gunzip” command on linux). 
+Copy the text files downloaded either from GDEX (/gdex/data/d312009/2012\_eachfire\_modisviirs/FINNv2.5\_modvrs\_MOZART\_\*.txt.gz) or the website to your local directory where you can uncompress the file (using the “gunzip” command on linux). 
 
 ### 4. Background Oxidants Data and Aerosol Optical Properties Data
 
@@ -320,13 +320,13 @@ If you would like to use different background or aerosol optical property data f
 
 ### 5. Modification of streams.init\_atmosphere and streams.atmosphere
 
-When MPAS-GOCART2G is compiled, two streams files, *streams.init\_atmosphere* and *streams.atmosphere*, are created. More information on what these two files are and what information is contained in them is given in [Chapter 5 of the MPAS User’s Guide](https://www2.mmm.ucar.edu/projects/mpas/site/documentation/users_guide/configuring_io.html). For MPAS-GOCART2G and as noted in [Chapter 1](https://docs.google.com/document/d/122fPMFRE7-R-C53rPbVrAkL_NUjAZc8WCPjhhH0ru4s/edit?tab=t.0#bookmark=id.7pmv7eg2ok80) of these instructions, MPAS-GOCART2G I/O requires input streams for anthropogenic, biomass burning, and biogenic emissions. 
+When MPAS-GOCART2G is compiled, two streams files, *streams.init\_atmosphere* and *streams.atmosphere*, are created. More information on what these two files are and what information is contained in them is given in <a href="https://www2.mmm.ucar.edu/projects/mpas/site/documentation/users_guide/configuring_io.html" target="_blank" rel="noopener noreferrer">Chapter 5 of the MPAS User’s Guide</a>. For MPAS-GOCART2G and as noted in **Chapter 1** of these instructions, MPAS-GOCART2G I/O requires input streams for anthropogenic, biomass burning, and biogenic emissions. 
 
 When creating a new case, the file names for the emissions changes from the default streams files that are provided. Therefore, the user needs to review the information in these two files and modify any file names to match what was generated in the emissions pre-processing step above.  
 
 Also ensure that the *submit\_mpas\_gocart.bash* script will link to the streams files correctly.  
 
-For adding in user defined streams, follow the instructions found in Section 6.2 of the [MPAS-A Tutorial Practice Guide](https://www2.mmm.ucar.edu/projects/mpas/tutorial/Virtual2025/). In short, output streams can be defined using either variable names or a text file (stream\_list) containing a list of desired output variables. Here is an example of each method: 
+For adding in user defined streams, follow the instructions found in Section 6.2 of the <a href="https://www2.mmm.ucar.edu/projects/mpas/tutorial/Virtual2026/" target="_blank" rel="noopener noreferrer">MPAS Tutorial - Practice Guide</a>). In short, output streams can be defined using either variable names or a text file (stream\_list) containing a list of desired output variables. Here is an example of each method: 
 
 Using variable definition add this as a new code block to the *streams.atmosphere* file: 
 
@@ -439,16 +439,13 @@ All of the fields needed for MPAS-GOCART2G are listed in the MERRA\_IC config.ya
   `- {source: "OVP14_ISOP",            file: "prefix_in_2", target: "ISOPRENE",      desc: "Isoprene", units: "mole mole-1"}`  
 `You can confirm the species mapping between the files using ncdump. Any missing species will be filled in with zeros in the MERRA_IC code, but it is better to fill the data with an available year (2019 has all species available).` 
 
-[Back to MERRA processing instructions](#bookmark=kix.1aikzrhboh1a)
-
-
 ## **Appendix B: Visualization of MPAS output**
 
 MPAS-GOCART2G uses a variable-resolution, unstructured spherical centroidal Voronoi mesh for simulation and therefore traditional lat/lon visualization methods (i.e. NCVIEW) do not work with input and output files. Therefore simplified tools have been developed for quick visualization of MPAS files. 
 
 ### **MPAS-A tutorial python script**
 
-**The first method** is explained in detail in Section 6.5 of the [MPAS-A Tutorial](https://www2.mmm.ucar.edu/projects/mpas/tutorial/Virtual2026/) and uses a python script within the terminal to create images that visualize the native MPAS files. 
+**The first method** is explained in detail in Section 6.5 of the <a href="https://www2.mmm.ucar.edu/projects/mpas/tutorial/Virtual2026/" target="_blank" rel="noopener noreferrer">MPAS Tutorial - Practice Guide</a> and uses a python script within the terminal to create images that visualize the native MPAS files. 
 
 To use this method for a file in your run directory first run: 
 
@@ -489,7 +486,7 @@ to:
 
 **fld \= uxds\_mpas\[field\].isel(Time=0, nVertLevels=0)**
 
-with other options such as zooming in on particular regions discussed in section 6.5 of the [MPAS-A Tutorial](https://www2.mmm.ucar.edu/projects/mpas/tutorial/Virtual2026/)**.** 
+with other options such as zooming in on particular regions discussed in section 6.5 of the <a href="https://www2.mmm.ucar.edu/projects/mpas/tutorial/Virtual2026/" target="_blank" rel="noopener noreferrer">MPAS Tutorial - Practice Guide</a>**.** 
 
 ### **Regrid output to a lat-lon file and then view**
 
@@ -506,18 +503,18 @@ The acquisition and compiling of this tool is described in detail in the tutoria
 
 These steps will give you a compiled version of the convert\_mpas tool that you can access and run. Once compiled, you can directly add the last line to your .bashrc file and it will be available automatically each time you log on to Derecho. 
 
-The base version of this tool takes an MPAS-gridded file and converts it to a global 0.5 by 0.5 degree netcdf named [latlon.nc](http://latlon.nc). If the steps above have been followed, you can simply run the tool targeting the same file above using: 
+The base version of this tool takes an MPAS-gridded file and converts it to a global 0.5 by 0.5 degree netcdf named latlon.nc. If the steps above have been followed, you can simply run the tool targeting the same file above using: 
 
 **convert\_mpas init\_chems\_emissions.nc**  
-Which will give you an output file of [latlon.nc](http://latlon.nc) which has all of the tracers stored in the parent file, just now in the 0.5 by 0.5 degree fixed grid format. This file can now be viewed and plotted using traditional methods using Python or ncview. This tool does not do mass-conservative regridding, so should only be used for reference and data visualization, more complex methods should be used for analysis and generation of publication-ready figures. 
+Which will give you an output file of latlon.nc which has all of the tracers stored in the parent file, just now in the 0.5 by 0.5 degree fixed grid format. This file can now be viewed and plotted using traditional methods using Python or ncview. This tool does not do mass-conservative regridding, so should only be used for reference and data visualization, more complex methods should be used for analysis and generation of publication-ready figures. 
 
 ### **JupyterLab notebook Python script**
 
-**The final method** is using JupyterLab notebooks and provides the most interactive plotting method. To use this method, users should be comfortable running JupyterHub or JupyterLab on the Derecho of home environments, and more detail can be found here for the NCAR Derecho environment: 
+**The final method** is using JupyterLab notebooks and provides the most interactive plotting method. To use this method, users should be comfortable running JupyterHub or JupyterLab on the Derecho or home environments, and more detail can be found here for the NCAR Derecho environment through OnDemand: 
 
-[https://ncar-hpc-docs.readthedocs.io/en/latest/compute-systems/jupyterhub/](https://ncar-hpc-docs.readthedocs.io/en/latest/compute-systems/jupyterhub/) 
+<a href="https://ncar-hpc-docs.readthedocs.io/en/latest/compute-systems/ood/" target="_blank" rel="noopener noreferrer">NCAR CISL OnDemand</a>) 
 
-Within a new job started in [JupyterHub](https://jupyterhub.hpc.ucar.edu/) you should create a new workbook using the NPL-2026a environment and paste the following code into the first block:
+Within a new job started in JupyterHub you should create a new workbook using the NPL-2025b environment and paste the following code into the first block:
 
 import netCDF4 as nc  
 import numpy as np  
