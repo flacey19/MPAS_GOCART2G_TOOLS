@@ -65,11 +65,11 @@ MPAS-GOCART2G has been tested with the “convection\_permitting” MPAS-A physi
     config\_radtlw\_interval \= '00:30:00'  
     config\_radtsw\_interval \= '00:30:00'  
     config\_bucket\_update \= 'none'  
-    config\_physics\_suite \= 'convection\_permitting'  
+    config\_physics\_suite \= 'MPAS\-GOCART2G'  
     config\_microp\_scheme \= 'mp\_thompson\_gocart2G'  
     config\_pbl\_scheme \= 'bl\_mynn'        
     config\_mynn\_mixchems \= true  
-    config\_convection\_scheme \= 'cu\_ntiedtke'Detail  
+    config\_convection\_scheme \= 'cu\_ntiedtke'  
     config\_ntiedtke\_ctrchems \= true  
     config\_ntiedtke\_scavchems \= true  
 /
@@ -124,21 +124,21 @@ git clone https://github.com/NCAR/MPAS-GOCART2G gocartMPAS
 
 Or copy the code from the ACOM campaign storage location:
 
-cp \-rp /glade/campaign/acom/MUSICA/MPAS/gocartMPAS .  
+cp \-rp /glade/campaign/acom/MUSICA/MPAS/MPAS-GOCART2G/gocartMPAS .  
    
    
 The *gocartMPAS* directory should be created with the MPAS-GOCART2G source code. The directory should include the following:  
 ls \-l gocartMPAS/  
 total 74  
-drwxrwxr-x+  4 USER acom-weather 16384 Sep 15 11:33 cmake/  
-\-rwxrwxr-x+  1 USER acom-weather  8128 Sep 15 11:33 CMakeLists.txt\*  
-drwxrwxr-x+  3 USER acom-weather 16384 Sep 15 11:33 docs/  
-\-rwxrwxr-x+  1 USER acom-weather  3131 Sep 15 11:33 INSTALL\*  
-\-rwxrwxr-x+  1 USER acom-weather  2311 Sep 15 11:33 LICENSE\*  
-\-rwxrwxr-x+  1 USER acom-weather 55424 Sep 15 11:33 Makefile\*  
-\-rwxrwxr-x+  1 USER acom-weather  2811 Sep 15 11:33 README.md\*  
-drwxrwxr-x+ 14 USER acom-weather 16384 Sep 15 11:33 src/  
-drwxrwxr-x+  5 USER acom-weather 16384 Sep 15 11:33 testing\_and\_setup/
+drwxrwxr-x+      4 USER acom-weather 16384 Sep 15 11:33 cmake/  
+\-rwxrwxr-x+     1 USER acom-weather  8128 Sep 15 11:33 CMakeLists.txt\*  
+drwxrwxr-x+      3 USER acom-weather 16384 Sep 15 11:33 docs/  
+\-rwxrwxr-x+     1 USER acom-weather  3131 Sep 15 11:33 INSTALL\*  
+\-rwxrwxr-x+     1 USER acom-weather  2311 Sep 15 11:33 LICENSE\*  
+\-rwxrwxr-x+     1 USER acom-weather 55424 Sep 15 11:33 Makefile\*  
+\-rwxrwxr-x+     1 USER acom-weather  2811 Sep 15 11:33 README.md\*  
+drwxrwxr-x+     14 USER acom-weather 16384 Sep 15 11:33 src/  
+drwxrwxr-x+      5 USER acom-weather 16384 Sep 15 11:33 testing\_and\_setup/
 
 ### Compile MPAS-GOCART2G:
 
