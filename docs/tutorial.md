@@ -145,14 +145,14 @@ drwxrwxr-x+      5 USER acom-weather 16384 Sep 15 11:33 testing\_and\_setup/
 
 Compiling MPAS-GOCART2G follows the same steps as that for MPAS-A compilation. Please follow the steps outlined in chapter 1.2 of the <a href="https://www2.mmm.ucar.edu/projects/mpas/tutorial/Virtual2026/" target="_blank" rel="noopener noreferrer">MPAS Tutorial - Practice Guide</a>. For those who are familiar with compiling MPAS-A, the commands are the following:
 
-cd gocartMPAS  
-qcmd \-A $PROJ \-\- make gnu CORE=init\_atmosphere GOCART2G=true AUTOCLEAN=true  
-qcmd \-A $PROJ \-\- make gnu CORE=atmosphere GOCART2G=true AUTOCLEAN=true
+`cd gocartMPAS  
+qcmd -A $PROJ -- make gnu CORE=init_atmosphere GOCART2G=true AUTOCLEAN=true  
+qcmd -A $PROJ -- make gnu CORE=atmosphere GOCART2G=true AUTOCLEAN=true`
 
 where $PROJ is the NCAR HPC Derecho project account key that your work is charged to. If you don’t have access to Derecho, please refer to job submission guidelines for your local HPC. If you want to debug your simulation because of an error, you can compile the code with the DEBUG option turned on:
 
-qcmd \-A $PROJ \-\- make gnu CORE=init\_atmosphere GOCART2G=true AUTOCLEAN=true DEBUG=true  
-qcmd \-A $PROJ \-\- make gnu CORE=atmosphere GOCART2G=true AUTOCLEAN=true DEBUG=true
+`qcmd -A $PROJ -- make gnu CORE=init_atmosphere GOCART2G=true AUTOCLEAN=true DEBUG=true  
+qcmd -A $PROJ -- make gnu CORE=atmosphere GOCART2G=true AUTOCLEAN=true DEBUG=true`
 
 When the compilation of both init\_atmosphere and atmosphere are successful, the directory now has several input files needed to run MPAS-A (see the <a href="https://www2.mmm.ucar.edu/projects/mpas/tutorial/Virtual2026/" target="_blank" rel="noopener noreferrer">MPAS Tutorial - Practice Guide</a> for more information). There are also now the following executable, namelist, and streams files.
 
