@@ -20,6 +20,16 @@ These instructions combine information from both the <a href="https://www2.mmm.u
 
 **Appendix B** describes ways to visualize MPAS-GOCART2G output.
 
+### Quick workflow guide for first-time users
+
+If you are new to MPAS-GOCART2G, use this order:
+
+1. Read the background section only to understand the model and terminology.
+2. Complete Chapter 1 to build and test the example case with pre-provided inputs.
+3. Use Chapter 2 to prepare the files needed for your own case.
+4. Once the case is set up, verify that the generated `namelist.*` and `streams.*` files are in the run directory.
+5. Submit the job and check model output files before trying a larger simulation.
+
 ## **Background chapter Familiarizing yourself with the physics suite to run a MPAS-GOCART2G simulation**
 
 The MPAS-GOCART2G model has been developed as part of the NSF NCAR’s vision to move towards a unified modeling framework and links the MPAS-A dynamical core (Skamarock et al., 2012) to the GOCART2G chemical mechanism (Collow et al., 2024). The GOCART2G module adds 30 new scalars to represent eight tropospheric aerosol species and their precursors. Major aerosol species represented by GOCART2G include black carbon (BC), brown carbon (BrC), organic carbon (OC), sulfate, nitrate, ammonium, dust, and sea-salt. BC, BrC, and OC are present in hydrophobic and hydrophilic modes with an e-folding lifetime of 2.5 days for conversion of hydrophobic mode to hydrophilic mode. All the aerosol species are subjected to gravitational settling, dry deposition, and wet deposition processes. Gravitational settling is calculated following the parameterization of Fuchs (1965). Dry deposition velocity of aerosol and precursor species is estimated using the Wesely (1989) scheme. Resolved scale wet deposition of aerosols is calculated using aerosol-aware Thompson-Eidhammer 2014 scheme. Convective transport of all chemical constituents and wet deposition is simulated using nTiedtke scheme.  
@@ -115,21 +125,34 @@ setenv PATH /glade/campaign/mmm/wmr/mpas\_tutorial/metis/bin:${PATH}
 
 ### Download MPAS-GOCART2G from Github:
 
-First, go to a directory where you would like to store the MPAS-GOCART2G source code, such as the /glade/work/$USER directory where $USER is your login name on Derecho.  
+First, go to a directory where you would like to store the MPAS-GOCART2G source code and processing toos, such as the /glade/work/$USER directory where $USER is your login name on Derecho.  
 cd  /glade/work/$USER
 
 Depending on the version and host repository of the model, especially for development branches, you may need to set up an SSH key for the Derecho environment. Instructions for this can be found on this page <a href="https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent" target="_blank" rel="noopener noreferrer">Populating GitHub SSH Keys and Agents</a>.
 
 Next, clone the code from Github or copy a version from campaign storage.   
-git clone https://github.com/NCAR/MPAS-GOCART2G gocartMPAS 
+git clone git@github.com:NCAR/MPAS-GOCART2G.git
 
 Or copy the code from the ACOM campaign storage location:
 
-cp \-rp /glade/campaign/acom/MUSICA/MPAS/MPAS-GOCART2G/gocartMPAS .  
+cp \-rp /glade/campaign/acom/MUSICA/MPAS/MPAS-GOCART2G .  
    
    
-The *gocartMPAS* directory should be created with the MPAS-GOCART2G source code. The directory should include the following:  
-ls \-l gocartMPAS/  
+This will give you all of the tools needed to run MPAS-GOCART2g, including the source code in the *gocartMPAS* directory. The top level directory should include the following:  
+ls \-l MPAS_GOCART2G/  
+
+total 20
+drwxr-xr-x 7 USER ncar 4096 Oct 22 09:43 gocartMPAS
+drwxr-xr-x 2 USER ncar 4096 Oct 22 09:43 init_MPAS-GOCART2G
+-rw-r--r-- 1 USER ncar 2311 Oct 22 09:43 LICENSE
+-rw-r--r-- 1 USER ncar  252 Oct 22 09:43 README.md
+drwxr-xr-x 2 USER ncar 4096 Oct 22 09:43 UPTEMPO
+
+Where the source code is located in gocartMPAS. Navigate to this directory and the following should be the directory contents:
+
+cd MPAS-GOCART2G/gocartMPAS
+ls \-l
+
 total 74  
 drwxrwxr-x+      4 USER acom-weather 16384 Sep 15 11:33 cmake/  
 \-rwxrwxr-x+     1 USER acom-weather  8128 Sep 15 11:33 CMakeLists.txt\*  
@@ -143,7 +166,14 @@ drwxrwxr-x+      5 USER acom-weather 16384 Sep 15 11:33 testing\_and\_setup/
 
 ### Compile MPAS-GOCART2G:
 
-Compiling MPAS-GOCART2G follows the same steps as that for MPAS-A compilation. Please follow the steps outlined in chapter 1.2 of the <a href="https://www2.mmm.ucar.edu/projects/mpas/tutorial/Virtual2026/" target="_blank" rel="noopener noreferrer">MPAS Tutorial - Practice Guide</a>. For those who are familiar with compiling MPAS-A, the commands are the following:
+Before starting, make sure you have all of the following in place:
+
+- Access to the Derecho HPC environment and a valid project account key (`$PROJ`)
+- A working directory on Derecho or another supported HPC system
+- Either a cloned copy of the MPAS-GOCART2G repository or a local copy from campaign storage
+- A valid GitHub SSH key if you are cloning from GitHub (see the instructions in the background section)
+
+If those prerequisties are met, compiling MPAS-GOCART2G follows the same steps as that for MPAS-A compilation. Please follow the steps outlined in chapter 1.2 of the <a href="https://www2.mmm.ucar.edu/projects/mpas/tutorial/Virtual2026/" target="_blank" rel="noopener noreferrer">MPAS Tutorial - Practice Guide</a>. For those who are familiar with compiling MPAS-A, the commands are the following:
 
 ```
 cd gocartMPAS  
@@ -158,7 +188,11 @@ qcmd -A $PROJ -- make gnu CORE=init_atmosphere GOCART2G=true AUTOCLEAN=true DEBU
 qcmd -A $PROJ -- make gnu CORE=atmosphere GOCART2G=true AUTOCLEAN=true DEBUG=true
 ```
 
-When the compilation of both init\_atmosphere and atmosphere are successful, the directory now has several input files needed to run MPAS-A (see the <a href="https://www2.mmm.ucar.edu/projects/mpas/tutorial/Virtual2026/" target="_blank" rel="noopener noreferrer">MPAS Tutorial - Practice Guide</a> for more information). There are also now the following executable, namelist, and streams files.
+### What a successful compile should produce
+
+When both builds finish successfully, your repository directory should contain the executables, namelist files, and stream files needed to set up and run MPAS-GOCART2G.
+
+Expected files include:
 
 init\_atmosphere\_model\*  
 atmosphere\_model\*  
@@ -167,16 +201,19 @@ build\_tables\*
 namelist.init\_atmosphere  
 namelist.atmosphere
 
-stream\_list.atmosphere.diagnostics  
-stream\_list.atmosphere.diag\_ugwp  
-stream\_list.atmosphere.output  
-stream\_list.atmosphere.surface  
+stream\_list.atmosphere.output   
 streams.atmosphere  
 streams.init\_atmosphere
 
 For more information about these files, see the <a href="https://www2.mmm.ucar.edu/projects/mpas/tutorial/Virtual2026/" target="_blank" rel="noopener noreferrer">MPAS Tutorial - Practice Guide</a>. 
 
-**The next step** is to create the look-up tables used by the Thompson microphysics scheme by issuing the following command. 
+### Build the Thompson lookup tables
+
+**The next step** is to create the look-up tables used by the Thompson microphysics scheme by issuing the following command. Depending on the version of MPAS-GOCART2G you are using, these table may already be compiled within the model, so check for them in this directory first:
+
+src/core\_atmosphere/physics/physics\_wrf/files/ 
+
+If they are not present they must be built using:
 
 ./build\_tables
 
@@ -186,6 +223,17 @@ It will take 10-15 minutes to complete this job. Once it is finished, the follow
    MP\_THOMPSON\_freezeH2O\_DATA.DBL  
    MP\_THOMPSON\_QIautQS\_DATA.DBL  
 As suggested by the program output, copy these files to the src/core\_atmosphere/physics/physics\_wrf/files/ directory.
+
+### Checkpoint: what you should have before moving on
+
+At this point, you should be able to confirm all of the following:
+
+- The MPAS-GOCART2G source code is present in `gocartMPAS/`
+- The model executables were built successfully
+- The lookup tables were generated and copied to the physics files directory
+- You are ready to create and submit a case run directory
+
+If any of these items are missing, go back and finish the compile step before proceeding.
 
 ### MPAS-GOCART2G I/O: 
 
@@ -204,34 +252,34 @@ For this example, we have provided a shell script that will set up and build you
 
 cp /glade/campaign/acom/MUSICA/MPAS/scripts/submit\_mpas\_gocart.bash .
 
-This will copy a script to aid in job submission.The script is configurable and can be modified for other case studies (e.g., what is presented in Chapter 2). 
+This copies a helper script that will set up the case and submit the jobs. The script is configurable and can be modified for other case studies (for example, the workflow in Chapter 2).
 
-In the script, you will need to change line 11 (“proj=P19010000”) to use the Derecho Account Key that you can use to submit your jobs. If you don’t have access to Derecho, please refer to job submission guidelines for your local HPC.
+In the script, you will need to change line 11 (`proj=P19010000`) to use the Derecho Account Key that you can use to submit your jobs. If you don’t have access to Derecho, please refer to job submission guidelines for your local HPC.
 
-*What does the script do?*  
+*What does the script do?*
 The script creates a new directory in which the *init\_atmosphere* and *atmosphere* executables are run. The directory’s name is based on the start date of the simulation. In this example, the script creates the directory, 20241015/.
 
-The commands within the script are documented in the file. There are eight sections within the script that are outlined here.
+The commands within the script are documented in the file, and the workflow it implements is more structured than the original exercise description. The script performs the following actions in order:
 
-1. Set flags and input arguments (i.e., start date) for the simulation.  
-2. Set the path of the run script.  
-3. Set paths for the location of the 1\) MPAS-GOCART2G source code, 2\) the directory for the forecast files, including the output, 3\) GFS meteorology input files, 4\) MERRA-2 trace gas and aerosol input files, 5\) emissions input files, and 6\) background concentration files for the GOCART2G prescribed oxidants.  
-4. Create the MPAS forecast directory, which is a sub-directory of the path\_fcst directory and defines the location of the default namelists for the init\_atmosphere and atmosphere executables. The namelists are then modified to the start and end dates and times of the simulation.   
-5. Link the grid mesh, static, and streams files to the local directory (as described in the MPAS Tutorial Practice Guide), link to the meteorology and GOCART2G initialization and data files, and link to the executables init\_atmosphere and atmosphere.   
-6. Build and submit init\_atmosphere\_model.  
-7. Build and submit atmosphere\_model. Note that “submit atmosphere\_model” is a dependent job that will only run after the “submit init\_atmosphere\_model” job is successfully completed. 
+1. Set simulation controls and run metadata: start date, forecast length, grid name, project account, and whether to create the static chemistry file and/or nudging stage.
+2. Define the necessary directory paths for the MPAS-GOCART2G source code, the forecast output directory, GFS meteorology, MERRA-2 initialization files, emissions, background oxidant fields, grid files, and the namelist/stream templates.
+3. Create the case directory (for example, RUN\_001/20241015) and compute the simulation start and end dates used to populate the namelist templates.
+4. Copy the standard namelist and stream templates from the local input directories, then render them in place by replacing the grid placeholder (`__GRID_NAME__`) and writing the final `namelist.*` and `streams.*` files to the run directory.
+5. Link the default MPAS grid, static field files, background data, emissions, GFS/MERRA files, and compiled executables (`init_atmosphere_model`, `atmosphere_model`) into the case directory so that the model can run without manual file copying.
+6. Prepare and write the PBS job scripts for the required model stages. The default workflow is `static` init-atmosphere, then `chem` init-atmosphere, and then the forecast atmosphere step. If `run_nudging=TRUE`, the script also prepares a `nudging` init-atmosphere stage followed by the nudged atmosphere stage.
+7. Submit the generated job scripts on Derecho with the project account and core allocation configured in the script. The atmosphere jobs are staged after the required init-atmosphere jobs complete so the case builds in the proper order.
 
-   
-Review the script to ensure the project number, start date, length of simulation, and paths for the source code and output files (path\_fcst) are correct. Then submit the script on Derecho:
+Review the script to ensure the project number, start date, forecast length, and paths for the source code and output files (`path_fcst`) are correct. Then submit the script on Derecho:
 
 ./submit\_mpas\_gocart.bash
 
-The init\_atmosphere code creates the init\_chems\_emissions.nc file, which contains initial conditions for meteorology, static geographical fields, and all GOCART2G chemical (both gas and aerosol) species as well as emissions from anthropogenic, biomass burning, and biogenic sources. 
+The script automatically creates the files needed for the case setup, including the generated namelists and stream files in the run directory. This is especially useful for new users because it reduces the number of manual edits needed when setting up a case that differs from the tutorial example.
+
+The init\_atmosphere code creates the init\_chems\_emissions.nc file, which contains initial conditions for meteorology, static geographical fields, and all GOCART2G chemical (both gas and aerosol) species as well as emissions from anthropogenic, biomass burning, and biogenic sources.
 
 As the atmosphere code integrates through the simulation, the following hourly output files are created:
 
-* 163842.output.2024-10-15\_0\*.00.00.nc — These files contain selected variables (including aerosol concentrations) specified in “stream\_list.output” .   
-* 163842.diagnostics.2024-10-15\_0\*.00.00.nc – These files contain the variables listed in the “stream\_list.diagnostics” 
+* 163842.output.2024-10-15\_0\*.00.00.nc — These files contain selected variables (including aerosol concentrations) specified in “stream\_list.output”.   
 
 You will not generate the 163842.restart.2024-10\*.nc files with this example run as the defined restart timestep is 12:00 hours, and the simulation run time is only 3 hours. Restart files are checkpoints of the model state and can be used to restart a simulation from the point they are written.  
 
@@ -255,19 +303,41 @@ More information about plotting MPAS-GOCART2G output is given in **Appendix B**.
 
 This chapter provides information on setting up a different case using the same grid mesh as in chapter 1 but running a different time period. A description is given on where to obtain input files for running the program *init\_atmosphere* which sets up the MPAS-GOCART2G simulation. The chapter is structured by the four types of input files needed to run a new case:
 
-1. Preparation of meteorology fields  
-2. Getting MERRA-2 data for the initial concentrations of the species  
-3. Preparation of the emissions (anthropogenic, biogenic, biomass burning)  
-4. Linking to data for the prescribed oxidant fields 
+1. Meteorology fields
+2. MERRA-2 files for initial chemical conditions
+3. Emissions files (anthropogenic, biogenic, and biomass burning)
+4. Background oxidant and aerosol optical-property data
 
+If any one of these is missing or incorrectly formatted, the model setup will not be complete.
+
+### Before you begin: quick checklist
+
+Before moving into the detailed steps, confirm that you have:
+
+- a valid Derecho project account (`$PROJ`), if using Derecho
+- the MPAS-GOCART2G source code compiled and available
+- a working directory for pre-processing files
+- access to the required input datasets from MERRA-2, CAMS, FINN, and the MPAS campaign directories
+
+At the end of this chapter, the goal is to have all required inputs staged and ready so that the `init_atmosphere` setup step can run cleanly.
 
 ### 1. Preparation of Meteorology Fields
 
-A 2-week spin-up of the GOCART-2G fields is needed before running the case study. Therefore, *obtain meteorology input data starting 2 weeks before the start of the case study*. The end date should be the same as the end date for the case study. 
+A 2-week spin-up is needed before the start of your case study, so you should obtain meteorology input data beginning 2 weeks before the case start date. The end date should match the end date of the case study.
 
-When following these instructions for the first time, we recommend using the same 60-km uniform grid mesh as that used in Chapter 1, but for a different time period. Once you are comfortable with the pre-processing steps, then testing other grid meshes is encouraged. The instructions to set up the grid mesh and static fields can be found in chapter 1.3 of the <a href="https://www2.mmm.ucar.edu/projects/mpas/tutorial/Virtual2026/" target="_blank" rel="noopener noreferrer">MPAS Tutorial - Practice Guide</a>,
+For a first case, it is strongly recommended that you use the same 60-km uniform grid mesh as Chapter 1. Once you are comfortable with the setup, you can experiment with other mesh configurations.
 
-The steps to obtain meteorology datasets (either GFS or ERA) and converting them to an intermediate file format that *init\_atmosphere\_model* are presented in the <a href="https://www2.mmm.ucar.edu/projects/mpas/tutorial/Virtual2026/" target="_blank" rel="noopener noreferrer">MPAS Tutorial - Practice Guide</a>) in Section 2\. After following the instructions in the MPAS-A tutorial, several met\_data files (either “GFS:yyyy-mm-dd-hh” or “ERA5:yyyy-mm-dd-hh”) should be in a newly created met\_data/ directory. 
+The MPAS-A tutorial contains the detailed instructions for generating the required meteorology input files. In practice, you should follow the tutorial’s preparation steps to create a `met_data/` directory containing files such as:
+
+```text
+GFS:yyyy-mm-dd-hh
+ERA5:yyyy-mm-dd-hh
+```
+
+These files are then converted into the intermediate file format expected by `init_atmosphere_model`. If you are planning on runnijng using meteorlogical nidging, you will need to generate these files at the apporpirate timesteps (usually 6 hours) for the entire simulation period. 
+
+Expected outcome: after this step, you should have a complete `met_data/` directory covering the necessary spin-up and simulation window.
+
 
 ### 2. Getting MERRA data and convert to MPAS intermediate files
 
@@ -277,33 +347,51 @@ Appendix A provides information on how to download MERRA data from the NASA Eart
 
 Once the MERRA input files are in a local directory, converting the MERRA data to the MPAS-A grid mesh can be done with the python MERRA processing script, *run\_processing.py*. The script and instructions for running the script can be found on the <a href="https://github.com/NCAR_MPAS-GOCART2G/init_MPAS-GOCART2G" target="_blank" rel="noopener noreferrer">init_MPAS_GOCART2G</a>.
 
+Expected outcome: after this step, you should have the chemically prepared MERRA-2 intermediate files in the correct format for the MPAS grid.
 
 ### 3. Preparation of the Emissions via UPTEMPO
 
-The emissions preprocessor, UPTEMPO, is a python script. UPTEMPO is contained within  the MPAS-GOCART2G repository and will be obtained on the initial clone of the MPAS-GOCART2G repository or independently using:  
+The emissions preprocessor, UPTEMPO, is a Python tool used to prepare the anthropogenic, biogenic, and biomass burning emissions needed for MPAS-GOCART2G.
+
+You can obtain UPTEMPO from the MPAS-GOCART2G repository, or clone it directly with:
+
 git clone https://github.com/NCAR/MPAS-GOCART2G/UPTEMPO UPTEMPO
 
 To run UPTEMPO you can either use your Terminal or submit a job to Derecho’s PBS system. 
 
 Go to the <a href="https://github.com/NCAR_MPAS-GOCART2G/UPTEMPO" target="_blank" rel="noopener noreferrer">UPTEMPO</a> and follow the instructions in the README files.   
 
-For processing **anthropogenic emissions** from the CAMS inventory: README\_CAMS.md
+#### Anthropogenic emissions from CAMS
 
-The *config\_cams\_anth\_regrid.yaml* file lists directories pointing to the CAMS v6.2 emissions for January 2001 to 2024 and the MPAS uniform 60-km grid mesh. In case the directories on Derecho do not have emissions for the year of your study, you can download those from the ECCAD database. Here is the ECCAD user’s guide: <a href="https://eccad.aeris-data.fr/user_guide/" target="_blank" rel="noopener noreferrer">ECCAD - Users Guide</a>. Make sure you download all the sectors because GOCART-2G requires sectoral information for different species.
+Use the instructions in `README_CAMS.md` and the configuration file `config_cams_anth_regrid.yaml`.
 
-For processing **biogenic emissions** from the CAMS inventory: README\_CAMS\_BIOG.md
+This file includes the CAMS v6.2 emissions directories and the MPAS uniform 60-km grid configuration. If the required year is not already available on Derecho, download the needed files from the ECCAD database. See the <a href="https://eccad.aeris-data.fr/user_guide/" target="_blank" rel="noopener noreferrer">ECCAD Users Guide</a>.
 
-The pre-processing for biogenic emissions uses a climatological dataset, so it is not necessary to specify the year. In the code that is provided, we use 2019 as a placeholder. Note, that the resulting biogenic emissions are climatology and do not represent a specific year.
+Important: download all sectors. GOCART-2G requires sector-resolved emissions for different species.
 
-For processing **biomass burning emissions** from the FINN2.5 inventory: README\_FINN.md
+#### Biogenic emissions from CAMS
 
-Getting FINNv2.5 data input files:  
-For 2012-2023 the FINNv2.5 data input files are available on the Geoscience Data Exchange (GDEX) website <a href="https://gdex.ucar.edu/datasets/d312009/" target="_blank" rel="noopener noreferrer">GDEX Fire Inventory from NCAR database</a>. After reading the description of the data, click on Data Access. On Derecho, you can make use of the NCAR Data Storage System Holdings. You will want the “eachfire modisviirs: Global daily emissions for each file at 1 km resolution, the base and speciated VOCS based on MODISVIIRS data” (last row of the table) data. For annual text files you will need to use the file\_type: ‘annual’ in the YAML file. 
+Use `README_CAMS_BIOG.md`.
 
-For 2024-present, you will need to get the daily near real time data files from <a href="https://www.acom.ucar.edu/acresp/MODELING/finn_emis_txt/" target="_blank" rel="noopener noreferrer">FINN Emission text files</a>.   
-Important: You will need to set the YAML flag to file\_type: ‘daily’ as the configuration. 
+Biogenic emissions are based on a climatological dataset, so a specific year is not required. The example setup uses 2019 as a placeholder; the resulting fields are climatological and do not represent a specific year.
 
-Copy the text files downloaded either from GDEX (/gdex/data/d312009/2012\_eachfire\_modisviirs/FINNv2.5\_modvrs\_MOZART\_\*.txt.gz) or the website to your local directory where you can uncompress the file (using the “gunzip” command on linux). 
+#### Biomass burning emissions from FINN2.5
+
+Use `README_FINN.md`.
+
+To obtain FINN v2.5 data:
+
+- For 2012-2023, use the data from the Geoscience Data Exchange (GDEX) archive: <a href="https://gdex.ucar.edu/datasets/d312009/" target="_blank" rel="noopener noreferrer">GDEX Fire Inventory from NCAR database</a>
+- For 2024-present, use the near-real-time daily files from <a href="https://www.acom.ucar.edu/acresp/MODELING/finn_emis_txt/" target="_blank" rel="noopener noreferrer">FINN Emission text files</a>
+
+The data file type depends on the period:
+
+- annual files: use `file_type: 'annual'`
+- daily files: use `file_type: 'daily'`
+
+After downloading the files, copy them to a local working directory and decompress them as needed using `gunzip` on Linux.
+
+Expected outcome: after this step, you should have processed anthropogenic, biogenic, and biomass-burning emission files ready to be linked into the case run directory.
 
 ### 4. Background Oxidants Data and Aerosol Optical Properties Data
 
@@ -317,54 +405,112 @@ Aerosol optical properties are from Chin et al., 2002\. These data files are loc
 
 /glade/campaign/acom/MUSICA/MPAS/input/optics\_files
 
-The submit\_mpas\_gocart.bash script links to this directory, so no changes by the user are needed.
+Again, the example submission script links here automatically.
 
 If you would like to use different background or aerosol optical property data files, then simply create those files in the same format as those provided in the directory and modify the *submit\_mpas\_gocart.bash* script to link to the new files.   
 
 *Note:* In the future, obtaining the background oxidants data from WACCM output will become available.  
 
+### Checkpoint before setting up the case
+
+At this point, you should have the following prepared and ready:
+
+- meteorology files covering the spin-up and simulation period
+- MERRA-2 files converted to MPAS-compatible format
+- processed emissions files from UPTEMPO
+- background oxidant and optical property input files
+
+Once these are all in place, the next steps are to modify `streams.init_atmosphere` and `streams.atmosphere`, then create and submit the new case.
+
 ### 5. Modification of streams.init\_atmosphere and streams.atmosphere
 
-When MPAS-GOCART2G is compiled, two streams files, *streams.init\_atmosphere* and *streams.atmosphere*, are created. More information on what these two files are and what information is contained in them is given in <a href="https://www2.mmm.ucar.edu/projects/mpas/site/documentation/users_guide/configuring_io.html" target="_blank" rel="noopener noreferrer">Chapter 5 of the MPAS User’s Guide</a>. For MPAS-GOCART2G and as noted in **Chapter 1** of these instructions, MPAS-GOCART2G I/O requires input streams for anthropogenic, biomass burning, and biogenic emissions. 
+For a new case, you usually do not edit the compiled `streams.*` and `namelist.*` files in the source tree. Instead, the run script generates a case-specific copy from templates stored in the model input directories. This is especially important now that the example `submit_mpas_gocart.bash` script generates these files automatically from template files and substitutes the case metadata (for example, the grid name via `__GRID_NAME__`).
 
-When creating a new case, the file names for the emissions changes from the default streams files that are provided. Therefore, the user needs to review the information in these two files and modify any file names to match what was generated in the emissions pre-processing step above.  
+The typical workflow is:
 
-Also ensure that the *submit\_mpas\_gocart.bash* script will link to the streams files correctly.  
+1. Start from the template files in the model source tree.
+2. Copy them into the case run directory.
+3. Replace placeholders such as `__GRID_NAME__`.
+4. Update any file names, emission stream names, or output selections for the new case.
+5. Run the generated `init_atmosphere` or `atmosphere` job using the case-specific `namelist.*` and `streams.*` files.
 
-For adding in user defined streams, follow the instructions found in Section 6.2 of the <a href="https://www2.mmm.ucar.edu/projects/mpas/tutorial/Virtual2026/" target="_blank" rel="noopener noreferrer">MPAS Tutorial - Practice Guide</a>). In short, output streams can be defined using either variable names or a text file (stream\_list) containing a list of desired output variables. Here is an example of each method: 
+This is the recommended approach because it keeps the setup reproducible and avoids editing the original compiled templates by hand.
 
-Using variable definition add this as a new code block to the *streams.atmosphere* file: 
+For more information about what these files contain and how they are used, see <a href="https://www2.mmm.ucar.edu/projects/mpas/site/documentation/users_guide/configuring_io.html" target="_blank" rel="noopener noreferrer">Chapter 5 of the MPAS User’s Guide</a>. For MPAS-GOCART2G, the essential point is that the model needs stream definitions for anthropogenic, biomass-burning, and biogenic emissions, plus the standard output variables you want to save.
 
-**\<stream name="sfc\_winds"**  
-        **type="output"**  
-        **filename\_template="surface\_winds.$Y-$M-$D\_$h.nc"**  
-        **filename\_interval="output\_interval"**  
-        **output\_interval="60:00" \>**
+### What to check in a new case
 
-        **\<var name="u10"/\>**  
-        **\<var name="v10"/\>**  
-**\</stream\>**
+When you create a new case, the emission file names in the stream files often differ from the default template values. Therefore, after the script creates the case-specific files, review `streams.atmosphere` and `streams.init_atmosphere` and confirm that the file paths and stream names match the files generated in the emissions preprocessing step.
 
-Or, using a file called “stream\_list.sfc\_winds” that contains the following: 
+The simplest workflow is:
 
-**u10**  
-**v10**
+- edit the templates before submitting the case if the change is systematic, or
+- edit the generated case files in the run directory after the script has created them if the change is case specific.
 
-You can add in a new stream (identical to the one above) into *streams.atmosphere* using the following code block: 
+The example submission script is designed to link the stream files correctly and generate the matching PBS job files. It calls commands like:
 
-**\<stream name="sfc\_winds"**  
-        **type="output"**  
-        **io\_type="pnetcdf,cdf5"**  
-        **filename\_template="surface\_winds.$Y-$M-$D\_$h.nc"**  
-        **output\_interval="00\_01:00:00"\>**  
-        **\<file name="stream\_list.sfc\_winds"/\>**  
-**\</stream\>**
+```bash
+mpiexec ./init_atmosphere_model -n <namelist> -s <stream>
+mpiexec ./atmosphere_model -n <namelist> -s <stream>
+```
 
-When MPAS-GOCART2G is compiled, a number of *streams\_list.atmosphere\** files are created. The standard files are:  
-stream\_list.atmosphere.diagnostics  
-stream\_list.atmosphere.output  
-stream\_list.atmosphere.surface  
-And contain information about what fields to output during the simulation. 
+This ensures the namelist, stream, and job submission files stay consistent for each model stage.
+
+### Adding a custom output stream
+
+For user-defined output, follow the instructions in Section 6.2 of the <a href="https://www2.mmm.ucar.edu/projects/mpas/tutorial/Virtual2026/" target="_blank" rel="noopener noreferrer">MPAS Tutorial - Practice Guide</a>. In short, output streams can be defined either by listing variables directly in the stream block or by referencing a separate `stream_list` file.
+
+#### Option 1: define variables directly in `streams.atmosphere`
+
+```xml
+<stream name="sfc_winds"
+        type="output"
+        filename_template="surface_winds.$Y-$M-$D_$h.nc"
+        filename_interval="output_interval"
+        output_interval="60:00">
+
+    <var name="u10"/>
+    <var name="v10"/>
+</stream>
+```
+```
+
+#### Option 2: define a separate `stream_list` file
+
+Create a file named `stream_list.sfc_winds` containing:
+
+```text
+u10
+v10
+```
+
+Then add the following to `streams.atmosphere`:
+
+```xml
+<stream name="sfc_winds"
+        type="output"
+        io_type="pnetcdf,cdf5"
+        filename_template="surface_winds.$Y-$M-$D_$h.nc"
+        output_interval="00_01:00:00">
+    <file name="stream_list.sfc_winds"/>
+</stream>
+```
+
+This is the same stream definition but it uses a text file to list the output variables instead of writing each variable directly in the XML block.
+
+### Generated `stream_list.*` files
+
+When MPAS-GOCART2G is compiled, a number of `stream_list.atmosphere.*` files are created. The standard files are:
+
+```text
+stream_list.atmosphere.diagnostics
+stream_list.atmosphere.output
+stream_list.atmosphere.surface
+```
+
+These files define which diagnostic and output variables are written during the simulation. For a new case, review these files after the script has generated the case directory to confirm that the correct output variables and emission streams are in place.
+
+If you are following the template-driven workflow in the `submit_mpas_gocart.bash` this is usually the point at which you should check the generated files rather than editing the source templates directly or add in new user-defined stream_list files and fields.
 
 ## **Appendix A:  Downloading MERRA2 Files** 
 
