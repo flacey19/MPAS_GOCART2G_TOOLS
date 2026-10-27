@@ -248,11 +248,11 @@ It is best to run MPAS\_GOCART2G on the Derecho scratch directory. Begin by crea
 mkdir \-p /glade/derecho/scratch/$USER/gocartMPAS/Example-1  
 cd /glade/derecho/scratch/$USER/gocartMPAS/Example-1
 
-For this example, we have provided a shell script that will set up and build your simulation directory and submit the jobs. You can copy this script into your new directory using the following command.
+For this example, we have provided a shell script that will set up and build your simulation directory and the job submission scripts for this example. You can copy this script into your new directory using the following command.
 
 cp /glade/campaign/acom/MUSICA/MPAS/scripts/submit\_mpas\_gocart.bash .
 
-This copies a helper script that will set up the case and submit the jobs. The script is configurable and can be modified for other case studies (for example, the workflow in Chapter 2).
+This copies a helper script that will set up the case and create the job submission scripts and submit them as dependent jobs based on your case setup. The script is configurable and can be modified for other case studies (for example, the workflow in Chapter 2).
 
 In the script, you will need to change line 11 (`proj=P19010000`) to use the Derecho Account Key that you can use to submit your jobs. If you don’t have access to Derecho, please refer to job submission guidelines for your local HPC.
 
@@ -275,9 +275,40 @@ Review the script to ensure the project number, start date, forecast length, and
 
 The script automatically creates the files needed for the case setup, including the generated namelists and stream files in the run directory. This is especially useful for new users because it reduces the number of manual edits needed when setting up a case that differs from the tutorial example.
 
-The init\_atmosphere code creates the init\_chems\_emissions.nc file, which contains initial conditions for meteorology, static geographical fields, and all GOCART2G chemical (both gas and aerosol) species as well as emissions from anthropogenic, biomass burning, and biogenic sources.
+The init\_atmosphere code creates the init\_chems\_emissions.nc file, which contains initial conditions for meteorology, static geographical fields, and all GOCART2G chemical (both gas and aerosol) species as well as emissions from anthropogenic, biomass burning, and biogenic sources. A successful submisison of this script should look like this:
 
-As the atmosphere code integrates through the simulation, the following hourly output files are created:
+user@derecho://glade/derecho/scratch/$USER/gocartMPAS/Example-1> ./submit_mpas_gocart.bash 
+The script is running from: /glade/derecho/scratch/$USER/gocartMPAS/Example-1
+MPAS-GOCART-2G forecast start date is: 2024-10-15_00:00:00
+MPAS-GOCART-2G forecast end date is:   2024-10-15_03:00:00
+Skipping static init_atmosphere step because create_static=FALSE
+Prepared chemistry init_atmosphere run in: 
+/glade/derecho/scratch/$USER/gocartMPAS/Example-1/RUN_001/20241015
+Skipping nudging init_atmosphere step because run_nudging=FALSE
+Warning: init_chems_emissions.nc not found in 
+/glade/derecho/scratch/$USER/gocartMPAS/Example-1/RUN_001/20241015; chemistry atmosphere run may fail without the chemistry initialization.
+Create this file by running run_init_chem.pbs.
+Prepared chemistry atmosphere run in: /glade/derecho/scratch/$USER/gocartMPAS/Example-1/RUN_001/20241015
+Skipping run_init_static.pbs (file not found)
+Submitting root job (held): run_init_chem.pbs
+Skipping run_init_nudging.pbs (file not found)
+Submitting dependent job: run_atm_chem.pbs (afterok:7965678.desched1)
+Skipping run_atm_nudging.pbs (file not found)
+Releasing chain starting at 7965678.desched1
+
+You can check the status of the submitted using qstat, which should give output similar to this:
+
+user@derecho:/glade/derecho/scratch/$USER/gocartMPAS/Example-1> qstat -u $USER
+
+desched1:
+                                                            Req'd  Req'd   Elap 
+Job ID          Username Queue    Jobname    SessID NDS TSK Memory Time  S Time 
+--------------- -------- -------- ---------- ------ --- --- ------ ----- - -----
+7965679.desche* lacey    cpu      atm_chem      --    1  64  235gb 01:00 H   -- 
+7965678.desche* lacey    cpu      init_chem     --    1  64  235gb 00:45 Q   -- 
+
+
+When atm_chem starts running and the atmosphere code integrates through the simulation, the following hourly output files are created in the run directory:
 
 * 163842.output.2024-10-15\_0\*.00.00.nc — These files contain selected variables (including aerosol concentrations) specified in “stream\_list.output”.   
 
