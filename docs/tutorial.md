@@ -224,6 +224,9 @@ It will take 10-15 minutes to complete this job. Once it is finished, the follow
    MP\_THOMPSON\_QIautQS\_DATA.DBL  
 As suggested by the program output, copy these files to the src/core\_atmosphere/physics/physics\_wrf/files/ directory.
 
+Then link to those files from the compile directory (MPAS-GOCART2G/gocartMPAS).  
+   ln -s src/core\_atmosphere/physics/physics\_wrf/files/MP\_THOMPSON* .  
+
 ### Checkpoint: what you should have before moving on
 
 At this point, you should be able to confirm all of the following:
@@ -318,6 +321,23 @@ Chapter 2 (Section 5\) discusses the definition of output in the streams file in
 
 ### Quick Viewing of the Model Results
 
+**Use ncvis**
+The ncvis command is similar to ncview but ncvis can read unstructured grid meshes. The ncvis command can be used to view both input and output files in netcdf format.
+
+Be sure the ncvis module is loaded in your environment. 
+
+module load ncvis
+
+The ncvis command also needs information about the grid mesh of the output file, which requires an additional argument in the command line.
+
+ncvis grid\_filename output\_filename
+
+Specifically, for Example 1, the command is
+
+ncvis x1.163842.grid.nc 163842.output.2024-10-15\_03.00.00.nc
+
+
+**Convert file to latitude-longitude grid and use ncview**
 For viewing model output to confirm that the model is running correctly, we recommend converting the model output to a regular latitude-longitude grid using the *convert\_mpas* tool. The converted output (on a latitude-longitude grid) can then be viewed using the *ncview* command or with plotting scripts. 
 
 Section 3.4 of the <a href="https://www2.mmm.ucar.edu/projects/mpas/tutorial/Virtual2026/" target="_blank" rel="noopener noreferrer">MPAS Tutorial - Practice Guide</a>) describes how to obtain the *convert\_mpas* tool and compile it. An example command line for running *convert\_mpas* (we recommend adding the full path of convert\_mpas to your $PATH so that you can use it in any directory) is given here.
@@ -390,7 +410,7 @@ git clone https://github.com/NCAR/MPAS-GOCART2G/UPTEMPO UPTEMPO
 
 To run UPTEMPO you can either use your Terminal or submit a job to Derecho’s PBS system. 
 
-Go to the <a href="https://github.com/NCAR_MPAS-GOCART2G/UPTEMPO" target="_blank" rel="noopener noreferrer">UPTEMPO</a> and follow the instructions in the README files.   
+Go to the <a href="https://github.com/NCAR/MPAS-GOCART2G/UPTEMPO" target="_blank" rel="noopener noreferrer">UPTEMPO</a> and follow the instructions in the README files.   
 
 #### Anthropogenic emissions from CAMS
 
